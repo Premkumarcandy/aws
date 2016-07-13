@@ -1,0 +1,27 @@
+# Full creation example with subnets and optional availability zones.
+# The absence or presence of subnets deletes or creates them respectively.
+- name: Creating VPC
+  ec2_vpc:
+    state: present
+    cidr_block: "{{ vpc.cidr_block }}"
+    resource_tags: { "Name":"{{ env.name }}{{ cluster.name }}vpc" }
+    subnets:
+      - cidr: 10.200.1.0/24
+        az: us-west-2c
+        resource_tags: { "Name": "{{ env.name }}{{ cluster.name }}" }
+      - cidr: 10.200.2.0/24
+        az: us-west-2b
+        resource_tags: { "Name": "{{ env.name }}{{ cluster.name }}" }
+    internet_gateway: True
+    route_tables:
+      - subnets:
+          - 10.200.1.0/24
+          - 10.200.2.0/24
+        routes:
+          - dest: 0.0.0.0/0
+            gw: igw
+  register: vpc
+
+- name: Debug VPC
+  debug: var=vpc
+

@@ -1,0 +1,14 @@
+- name: Creating rds_subnet_group
+  rds_subnet_group:
+    state: present
+    name: "{{ name }}"
+    description: "{{ name }} Subnet Group"
+    subnets:
+      - "{{ vpc.subnets[0].id }}"
+      - "{{ vpc.subnets[1].id }}"
+  register: rds_subnet_group
+
+- name: Debug rds_subnet_group
+  debug:
+    var: rds_subnet_group
+    

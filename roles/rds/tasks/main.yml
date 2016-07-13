@@ -1,0 +1,40 @@
+- name: Creating Security Group
+  ec2_group:
+    name: "{{ name }}rds"
+    description: "{{ name }}rds"
+    vpc_id: "{{ vpc.vpc_id }}"
+    rules:
+      - proto: tcp
+        from_port: 3306
+        to_port: 3306
+        cidr_ip: 0.0.0.0/0
+        # should be restricted to vpc traffic only
+        #group_id: "{{ vpc.default_security_group_id }}"
+    rules_egress:
+      - proto: all
+        cidr_ip: 0.0.0.0/0
+  register: ec2sg
+
+- name: Debug Security Group
+  debug:
+    var: ec2sg
+        
+- name: Creating RDS
+  rds:
+    command: create
+    instance_name: "{{ name }}dbm01"
+    db_engine: "{{ rds.db_engine }}"
+    size: "{{ rds.size }}"
+    instance_type: "{{ rds.instance_type }}"
+    username: "{{ rds.username }}"
+    password: SuperStrongPassword
+    security_groups: "{{ ec2sg.group_id }}"
+    #parameter_group: "{{ rds.parameter_group }}"
+    tags:
+      env: "{{ env.name }}"
+      cluster: "{{ cluster.name }}"
+  register: rds
+
+- name: Debug rds
+  debug:
+    var: rds

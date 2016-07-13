@@ -1,0 +1,5 @@
+redis:
+  name: "{{ env }}{{ cluster }}red"
+  node_type: cache.m3.medium
+  num_nodes: 1
+  

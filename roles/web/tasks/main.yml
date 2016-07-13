@@ -1,0 +1,90 @@
+- name: Creating security group
+  ec2_group:
+    region: "{{ region }}"
+    name: "{{ name }}"
+    rules:
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        cidr_ip: 0.0.0.0/0
+    rules_egress:
+      - proto: all
+        cidr_ip: 0.0.0.0/0
+  register: ec2sg
+
+- name: Provision ec2 instance
+  ec2:
+    vpc_subnet_id: "{{ vpc.vpc_id }}"
+    group: "{{ ec2sg.group_id }}"
+    image: "{{ ec2.source_ami }}"
+    instance_type: "{{ ec2.instance_type }}"
+    key_name: "{{ ec2.key_name }}"
+    instance_tags:
+      Name: "{{ name }}web"
+      Env: "{{ env.name }}"
+    count_tag:
+      Name: "{{ name }}web"
+    exact_count: 1
+    wait: true
+  register: ec2web
+
+- name: Add new instance to host group
+  add_host: 
+    hostname: "{{ item.public_ip }}" 
+    groupname: launched
+  with_items: ec2web.tagged_instances
+
+    - name: Wait for SSH to come up
+      wait_for: 
+        host: "{{ item.public_dns_name }}" 
+        port: 22 
+        delay: 60 
+        state: started
+      with_items: ec2.tagged_instances
+
+- hosts: launched
+  name: Deploy application
+  user: ec2-user
+  gather_facts: true
+  vars:
+    service: web
+    env: staging
+  roles:
+    - role: deploy
+
+- hosts: localhost
+  connection: local
+  gather_facts: true
+  vars:
+    app_name: snmobile
+    env: staging
+    service: web
+    region: us-east-1
+  tasks:
+    - name: Create an AMI from the provisioned instance
+      ec2_ami: 
+        region: "{{ region }}"
+        instance_id: "{{ item.id }}"
+        name: "{{ app_name }}_{{ env }}_{{ service }}-{{ ansible_date_time.epoch }}"
+        description: "{{ app_name }}_{{ env }}_{{ service }} - jruby"
+        wait: yes 
+      with_items:
+        - "{{ ec2.tagged_instances }}"
+      register: ami
+
+    - name: Tag AMI
+      ec2_tag:
+        region: "{{ region }}"
+        resource: "{{ ami.results[0].image_id }}"
+        state: present
+        tags:
+          Name: "{{ app_name }}"
+          Env: "{{ env }}"
+          Service: "{{ service }}"
+
+    - name: Terminate source instance
+      ec2:
+        region: "{{ region }}"
+        instance_ids: "{{ ami.results[0].item.id }}"
+        state: absent
+

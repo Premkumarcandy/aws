@@ -1,0 +1,13 @@
+- name: Creating elasticache_subnet_group
+  elasticache_subnet_group:
+    state: present
+    name: "{{ name }}"
+    description: "{{ name }} Subnet Group"
+    subnets:
+      - "{{ vpc.subnets[0].id }}"
+      - "{{ vpc.subnets[1].id }}"
+  register: elasticache_subnet_group
+
+- name: Debug elasticache_subnet_group
+  debug:
+    var: elasticache_subnet_group

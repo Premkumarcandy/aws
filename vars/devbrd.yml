@@ -1,0 +1,26 @@
+cluster:
+  name: 'brd'
+env:
+  name: 'dev'
+vpc:
+  cidr_block: 10.200.0.0/16
+redis:
+  node_type: cache.t2.micro
+  num_nodes: 1
+rds:
+  db_engine: MySQL
+  size: 10
+  instance_type: 'db.t2.micro'
+  username: mysqlroot
+  password: SuperStrongPassword
+ec2:
+  key_name: ec2key
+  instance_type: 't2.nano'
+  source_ami: 'ami-7172b611'
+#
+name: "{{ env.name }}{{ cluster.name }}"
+jump:
+  key_name: knife
+  instance_type: 't2.nano'
+  source_ami: 'ami-7172b611'
+#

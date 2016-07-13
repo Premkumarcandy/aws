@@ -1,0 +1,98 @@
+---
+- name: Playbook to create Web Server instance
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    # env vars
+    app_name: 'texture'
+    cluster: 'pub'
+    service: 'web'
+    env: 'dev'
+    name: "{{ app_name }}-{{ env }}-{{ service }}"
+    # aws vars
+    region: us-east-1
+    source_ami: ami-08111162
+    instance_type: t2.small
+    number_of_instances: 2
+    key_name: 'knife'
+
+  tasks:
+    - name: Create security group
+      ec2_group:
+        region: "{{ region }}"
+        name: "{{ name }}"
+        description: "{{ name }}"
+        rules:
+          - proto: tcp
+            from_port: 22
+            to_port: 22
+            cidr_ip: 0.0.0.0/0
+          - proto: tcp
+            from_port: 80
+            to_port: 80
+            cidr_ip: 0.0.0.0/0
+        rules_egress:
+          - proto: all
+            cidr_ip: 0.0.0.0/0
+      register: ec2sg
+
+    - name: Tag security group
+      ec2_tag:
+        region: "{{ region }}"
+        resource: "{{ ec2sg.group_id }}"
+        state: present
+        tags:
+          Name: "{{ name }}"
+          Application: "{{ app_name }}"
+          Cluster: "{{ cluster }}"
+          Service: "{{ service }}"
+          Env: "{{ env }}"
+
+    - name: Provision ec2 instance
+      ec2:
+        region: "{{ region }}"
+        group: "{{ name }}"
+        image: "{{ source_ami }}"
+        instance_type: "{{ instance_type }}"
+        key_name: "{{ key_name }}"
+        instance_tags:
+          Name: "{{ name }}"
+          Application: "{{ app_name }}"
+          Cluster: "{{ cluster }}"
+          Service: "{{ service }}"
+          Env: "{{ env }}"
+        count_tag:
+          Name: "{{ name }}"
+        exact_count: "{{ number_of_instances }}"
+        wait: yes
+      register: ec2
+
+    - name: Add new instance to host group
+      add_host: 
+        hostname: "{{ item.public_ip }}" 
+        groupname: launched
+      with_items: ec2.tagged_instances
+
+    - name: Wait for SSH to come up
+      wait_for: 
+        host: "{{ item.public_dns_name }}" 
+        port: 22 
+        state: started
+      with_items: ec2.tagged_instances
+
+- hosts: launched
+  user: ec2-user
+  gather_facts: yes
+
+#  vars:
+#    nginx:
+#      website: texture
+
+  roles:
+    - role: nginx
+      become: yes
+    - role: php
+      become: yes
+    - role: deploy
