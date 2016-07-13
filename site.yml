@@ -6,11 +6,11 @@
     - vars/devbrd.yml
   roles:
     - vpc
-#    - rds_subnet_group
-#    - ec_subnet_group
-#    - redis
-#    - rds
-    - jump
+    - rds_subnet_group
+    - ec_subnet_group
+    - redis
+    - rds
+#    - jump
 #    - create_ec2_web
 #    - deploy_without_docker
 #    - deploy_with_docker
