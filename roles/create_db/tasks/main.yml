@@ -1,0 +1,28 @@
+- name: Create database
+  mysql_db:
+    login_host: '{{ rds_instance.instance.endpoint }}'
+    login_user: '{{ rds.username }}'
+    login_password: '{{ rds.password }}'
+    name: '{{ create_db.mysql.user }}'
+    state: present
+
+- name: Create db user
+  mysql_user:
+    login_host: '{{ rds_instance.instance.endpoint }}'
+    login_user: '{{ rds.username }}'
+    login_password: '{{ rds.password }}'
+    name: '{{ create_db.mysql.user }}'
+    password: '{{ create_db.mysql.password }}'
+    priv: '{{ create_db.mysql.name }}.*:ALL'
+    state: present
+    host: '%'
+#- name: Import db dump
+#  mysql_db:
+#    login_host: '{{ rds_instance.instance.endpoint }}'
+#    login_user: '{{ create_db.mysql.user }}'
+#    login_password: '{{ create_db.mysql.password }}'
+#    name: '{{ create_db.mysql.user }}'
+#    state: import
+#    # get target from s3 or backup
+#    target: "/Users/rz/docker/cityline/db/cityline.sql"
+#  when: mysql show tables null

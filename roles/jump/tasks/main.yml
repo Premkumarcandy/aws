@@ -54,6 +54,5 @@
 #  user: ec2-user
 #  gather_facts: yes
 #  roles:
-#    - role: nginx
-#      become: yes
-#    - role: deploy
+#    - google_auth # yum install google-authenticator.x86_64
+
