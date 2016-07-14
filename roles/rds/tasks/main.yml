@@ -28,13 +28,23 @@
     instance_type: "{{ rds.instance_type }}"
     username: "{{ rds.username }}"
     password: SuperStrongPassword
-    security_groups: "{{ ec2sg.group_id }}"
-    #parameter_group: "{{ rds.parameter_group }}"
+    # rds_subnet_group
+    subnet: "{{ name }}"
+    vpc_security_groups: "{{ ec2sg.group_id }}" 
     tags:
       env: "{{ env.name }}"
       cluster: "{{ cluster.name }}"
-  register: rds
+    wait: yes
+    wait_timeout: 600
+  register: rds_instance
 
 - name: Debug rds
   debug:
-    var: rds
+    var: rds_instance
+
+#- name: Write the RDS facts/values to the file rds_info.yml inside the project directory
+#  shell: |
+#    echo "db_hostname: {{ rds.instance.endpoint }}" > rds_info.yml
+#    echo "db_name: {{ rds_db_name }}" >> rds_info.yml
+#    echo "db_username: {{ rds_db_username }}" >> rds_info.yml
+#    echo "db_password: {{ rds_db_password }}" >> rds_info.yml

@@ -2,6 +2,7 @@
   ec2_group:
     name: jump
     description: "jump"
+    vpc_id: "{{ vpc.vpc_id }}"
     rules:
       - proto: tcp
         from_port: 22
@@ -17,11 +18,13 @@
     var: ec2sg
   
 - name: Provision ec2 instance
-  ec2:
-    group_id: "{{ ec2sg.group_id }}"
+  ec2:    
     image: "{{ jump.source_ami }}"
     instance_type: "{{ jump.instance_type }}"
     key_name: "{{ jump.key_name }}"
+    vpc_subnet_id: "{{ vpc.subnets[0].id }}"
+    group_id: "{{ ec2sg.group_id }}"
+    assign_public_ip: yes
     instance_tags:
       Name: jump
     count_tag:
@@ -30,18 +33,22 @@
     wait: yes
   register: jump
 
+- name: Debug jump
+  debug:
+    var: jump
+  
 - name: Add new instance to host group
   add_host: 
     hostname: "{{ item.public_ip }}" 
     groupname: jump
-  with_items: jump.tagged_instances
+  with_items: "{{ jump.tagged_instances }}"
 
 - name: Wait for SSH to come up
   wait_for: 
     host: "{{ item.public_dns_name }}" 
     port: 22 
     state: started
-  with_items: jump.tagged_instances
+  with_items: "{{ jump.tagged_instances }}"
 
 #- hosts: jump
 #  user: ec2-user

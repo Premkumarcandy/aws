@@ -13,14 +13,22 @@ rds:
   instance_type: 'db.t2.micro'
   username: mysqlroot
   password: SuperStrongPassword
-ec2:
-  key_name: ec2key
-  instance_type: 't2.nano'
-  source_ami: 'ami-7172b611'
+create_db:
+  mysql:
+    user: mysqluser
+    password: mysqlpassword
+create_ec2_key:
+  name: 'knife-west2'
+  # located at role_name/files/file_name
+  key: 'knife-west2.pub'
+#ec2:
+#  key_name: "{{ create_ec2_key.name }}"
+#  instance_type: 't2.nano'
+#  source_ami: 'ami-7172b611'
 #
 name: "{{ env.name }}{{ cluster.name }}"
 jump:
-  key_name: knife
+  key_name: "{{ create_ec2_key.name }}"
   instance_type: 't2.nano'
   source_ami: 'ami-7172b611'
 #
