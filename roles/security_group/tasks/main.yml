@@ -1,22 +1,19 @@
 - name: Creating Security Group
   ec2_group:
-    name: "{{ name }}dcl"
-    description: "{{ name }} SG for Docker Cloud"
+    name: "{{ security_group.name }}"
+    description: "{{ security_group.name }}"
     vpc_id: "{{ vpc.vpc_id }}"
     rules:
-      - proto: tcp
-        from_port: 80
-        to_port: 80
-        cidr_ip: 0.0.0.0/0
-      - proto: tcp
-        from_port: 3306
-        to_port: 3306
+      - proto: "{{ item.proto }}"
+        from_port: "{{ item.port }}"
+        to_port: "{{ item_port }}"
         cidr_ip: 0.0.0.0/0
     rules_egress:
       - proto: all
         cidr_ip: 0.0.0.0/0
-  register: ec2sg
+  with_items: "{{ security_group }}"
+  register: ec2_security_group
 
-- name: Debug ec2sg
+- name: Debug Security Group
   debug:
-    var: ec2sg
+    var: ec2_security_group

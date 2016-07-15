@@ -3,11 +3,30 @@ cluster:
 env:
   name: 'dev'
 vpc:
+  state: present
   cidr_block: 10.200.0.0/16
+security_group:
+  - name: ssh
+    port: 22
+    proto: tcp
+  - name: http
+    port: 80
+    proto: tcp
+  - name: https
+    port: 443
+    proto: tcp
+  - name: mysql
+    port: 3306
+    proto: tcp
+  - name: redis
+    port: 6379
+    proto: tcp
 redis:
+  state: present
   node_type: cache.t2.micro
   num_nodes: 1
 rds:
+  state: present
   db_engine: MySQL
   size: 10
   instance_type: 'db.t2.micro'
@@ -18,6 +37,7 @@ create_db:
     user: mysqluser
     password: mysqlpassword
 create_ec2_key:
+  state: present
   name: 'knife-west2'
   # located at role_name/files/file_name
   key: 'knife-west2.pub'
@@ -28,6 +48,7 @@ create_ec2_key:
 #
 name: "{{ env.name }}{{ cluster.name }}"
 jump:
+  state: present
   key_name: "{{ create_ec2_key.name }}"
   instance_type: 't2.nano'
   source_ami: 'ami-7172b611'

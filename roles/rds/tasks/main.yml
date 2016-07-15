@@ -7,9 +7,8 @@
       - proto: tcp
         from_port: 3306
         to_port: 3306
+#        group_name: default
         cidr_ip: 0.0.0.0/0
-        # should be restricted to vpc traffic only
-        #group_id: "{{ vpc.default_security_group_id }}"
     rules_egress:
       - proto: all
         cidr_ip: 0.0.0.0/0
