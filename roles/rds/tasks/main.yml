@@ -1,18 +1,18 @@
-- name: Creating Security Group
-  ec2_group:
-    name: "{{ name }}rds"
-    description: "{{ name }}rds"
-    vpc_id: "{{ vpc.vpc_id }}"
-    rules:
-      - proto: tcp
-        from_port: 3306
-        to_port: 3306
+#- name: Creating Security Group
+#  ec2_group:
+#    name: "{{ name }}rds"
+#    description: "{{ name }}rds"
+#    vpc_id: "{{ vpc.vpc_id }}"
+#    rules:
+#      - proto: tcp
+#        from_port: 3306
+#        to_port: 3306
 #        group_name: default
-        cidr_ip: 0.0.0.0/0
-    rules_egress:
-      - proto: all
-        cidr_ip: 0.0.0.0/0
-  register: ec2sg
+#        cidr_ip: 0.0.0.0/0
+#    rules_egress:
+#      - proto: all
+#        cidr_ip: 0.0.0.0/0
+#  register: ec2sg
 
 - name: Debug Security Group
   debug:
@@ -29,7 +29,8 @@
     password: SuperStrongPassword
     # rds_subnet_group
     subnet: "{{ name }}"
-    vpc_security_groups: "{{ ec2sg.group_id }}" 
+    vpc_security_groups: "{{ mysql_sg_id }}"
+ #   vpc_security_groups: "{{ ec2sg.group_id }}" 
     tags:
       env: "{{ env.name }}"
       cluster: "{{ cluster.name }}"

@@ -1,7 +1,7 @@
 - name: Creating elasticache Redis server
   elasticache:
     name: "{{ name }}red"
-    state: present
+    state: "{{ redis.state }}"
     engine: redis
     node_type: "{{ redis.node_type }}"
     num_nodes: "{{ redis.num_nodes }}"
@@ -9,6 +9,8 @@
     # try to disable
     cache_engine_version: 2.8.24
     cache_subnet_group: "{{ name }}"
+    security_group_ids:
+      - "{{ redis_sg_id }}"
   register: redis
 
 - name: Debug redis

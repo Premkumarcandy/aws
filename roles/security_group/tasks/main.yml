@@ -1,12 +1,12 @@
 - name: Creating Security Group
   ec2_group:
-    name: "{{ security_group.name }}"
-    description: "{{ security_group.name }}"
+    name: "{{ item.name }}-{{ vpc.vpc_id }}"
+    description: "{{ item.name }}"
     vpc_id: "{{ vpc.vpc_id }}"
     rules:
       - proto: "{{ item.proto }}"
         from_port: "{{ item.port }}"
-        to_port: "{{ item_port }}"
+        to_port: "{{ item.port }}"
         cidr_ip: 0.0.0.0/0
     rules_egress:
       - proto: all
@@ -17,3 +17,9 @@
 - name: Debug Security Group
   debug:
     var: ec2_security_group
+
+- name: Set the RDS Security Group id as facts
+  set_fact:
+    "{{ item.item.name }}_sg_id": "{{ item.group_id}}"
+  with_items: "{{ ec2_security_group.results }}"
+  # redis_sg_id: sg-1f790a79
