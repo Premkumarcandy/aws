@@ -17,7 +17,7 @@
   debug:
     var: ec2sg
 
-- name: Search for AMI
+#- name: Search for AMI
 #  ec2_ami_find:
 #    region: "{{ vpc.region }}"
 #    virtualization_type: "{{ virtualization_type }}"
