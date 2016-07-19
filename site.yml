@@ -6,13 +6,13 @@
     - vars/devbrd.yml
   roles:
     - vpc
-    - security_group
-    - create_ec2_key
-    - jump
-    - rds_subnet_group
-    - ec_subnet_group
-    - redis
-    - rds
+#    - security_group
+#    - create_ec2_key
+#    - jump
+#    - rds_subnet_group
+#    - ec_subnet_group
+#    - redis
+#    - rds
     # execute create_db from jump box
     # - create_db
 #    - elb

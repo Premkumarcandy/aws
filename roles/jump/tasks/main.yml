@@ -16,9 +16,22 @@
 - name: Debug ec2sg
   debug:
     var: ec2sg
+
+- name: Search for AMI
+#  ec2_ami_find:
+#    region: "{{ vpc.region }}"
+#    virtualization_type: "{{ virtualization_type }}"
+#    architecture: "{{ architecture }}"
+#    ami_tags: "{{ ami_tags }}"
+#  register: ami_find
+
+#- name: Debug ami
+#  debug:
+#    var: ami_find
   
 - name: Provision ec2 instance
-  ec2:    
+  ec2:
+#    image: "{{ ami_find.results[0].ami_id }}"
     image: "{{ jump.source_ami }}"
     instance_type: "{{ jump.instance_type }}"
     key_name: "{{ jump.key_name }}"
@@ -31,6 +44,9 @@
       Name: jump
     exact_count: 1
     wait: yes
+#  with_items:
+#    - "{{ public_subnet_1 }}"
+#    - "{{ public_subnet_2 }}"    
   register: jump
 
 - name: Debug jump
