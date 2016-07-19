@@ -2,8 +2,8 @@
   hosts: localhost
   connection: local
   gather_facts: false
-  vars_files:
-    - vars/devbrd.yml
+#  vars_files:
+#    - vars/devbrd.yml
   roles:
     - vpc
     - security_group
