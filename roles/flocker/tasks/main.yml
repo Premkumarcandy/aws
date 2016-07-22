@@ -1,3 +1,8 @@
+- name: Copy swarm ssh key
+  authorized_key:
+    user: ubuntu
+    key: "{{ lookup('file', '/home/ec2-user/.ssh/swarm_rsa.pub') }}"
+
 - name: Install packages
   apt:
     name: "{{ item }}"

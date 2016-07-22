@@ -34,6 +34,6 @@
   synchronize:
     src: /etc/flocker/cluster.crt
     dest: /etc/flocker/cluster.crt
-  become: yes
+#  become: yes
   delegate_to: "{{ item }}"
   with_items: "{{ node_list }}"
