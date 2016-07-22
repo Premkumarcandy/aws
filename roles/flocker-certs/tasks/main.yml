@@ -22,9 +22,13 @@
     chdir: /etc/flocker
     creates: /etc/flocker/control-service.key
 
+- name: set fact groups
+  set_fact:
+    node_list: "{{ groups['tag_Flocker_true'] }}"
+    
 - name: debug groups
   debug:
-    var: "{{ groups['tag_Flocker_true'] }}"
+    var: node_list
     
 - name: Copy Remote-To-Remote (from serverA to serverB)
   synchronize:
