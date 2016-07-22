@@ -3,6 +3,7 @@
   hosts: tag_Flocker_true
   gather_facts: true
 #  vars:
+#    node_list: []
 #    cluster_name: mycluster
   roles:
     - role: flocker

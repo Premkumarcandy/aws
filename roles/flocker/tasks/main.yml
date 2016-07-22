@@ -3,6 +3,7 @@
     name: "{{ item }}"
     state: present
     update_cache: yes
+    cache_valid_time: 3600
   with_items:
     - apt-transport-https
     - software-properties-common
@@ -34,6 +35,26 @@
     path: /etc/flocker
     state: directory
     mode: 0750
-#    owner: root or flocker
-# group:
 
+#- name: set fact
+#  set_fact:
+#    foo_item: "{{ item }}"
+#  with_items:
+#    - four
+#    - five
+#    - six
+#  register: foo_result
+  
+- name: make a list
+  set_fact:
+    foo: "{{ ec2_private_dns_name | list }}"
+  
+- debug:
+    var: foo
+      
+#- name: Create list with private dns names
+#  local_action:
+#    add_host:
+#      hostname: "{{item}}"
+#      groupname: flocker_nodes
+#  with_items: "{{ ec2_private_dns_name }}"

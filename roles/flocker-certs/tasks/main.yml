@@ -9,3 +9,4 @@
   args:
     chdir: /etc/flocker
     creates: "/etc/flocker/control-{{ ec2_private_dns_name }}.crt"
+#  with_items: "{{ flocker_nodes }}"
