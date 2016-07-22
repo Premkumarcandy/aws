@@ -20,6 +20,7 @@
       args:
         chdir: /etc/flocker
         creates: /etc/flocker/cluster.crt
+      become: yes
                     
  # roles:
  #   - role: flocker
