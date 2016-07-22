@@ -6,18 +6,24 @@
   with_items:
     - apt-transport-https
     - software-properties-common
-
+  tags:
+    - flocker_node
+    
 - name: Add clusterhq repo
   apt_repository:
     repo: "deb https://clusterhq-archive.s3.amazonaws.com/ubuntu/{{ ansible_distribution_version }}/$(ARCH) /"
     state: present
-
+  tags:
+    - flocker_node
+    
 - name: Copy repo config
   copy:
     src: buildbot-700
     dest: /etc/apt/preferences.d/buildbot-700
     owner: root
     mode: 0644
+  tags:
+    - flocker_node
     
 - name: Install clusterhq-flocker pakages
   apt:
@@ -28,12 +34,16 @@
     - clusterhq-flocker-cli
     - clusterhq-flocker-node
     - clusterhq-flocker-docker-plugin
-
+  tags:
+    - flocker_node
+    
 - name: Create flocker configs dir
   file:
     path: /etc/flocker
     state: directory
-    mode: 0755
+    mode: 0750
+  tags:
+    - flocker_node
 #    owner: root or flocker
 # group:
 
