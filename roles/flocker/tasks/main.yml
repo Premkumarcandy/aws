@@ -38,7 +38,7 @@
 
 - name: set fact node list
   set_fact:
-    node_list: "{{ groups[['tag_Flocker_true']] }}"
+    node_list: "{{ groups['tag_Flocker_true'] }}"
 #    {{ hostvars[groups['tag_Flocker_true']]ec2_private_dns_name }}
 
 - name: debug node list
