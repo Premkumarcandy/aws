@@ -8,3 +8,14 @@
     - role: flocker
       become: yes
 
+- name: Playbook to generate certs for Flocker
+  remote_user: ubuntu
+  hosts: tag_flocker_manager
+  gather_facts: true
+  vars:
+    cluster_name: mycluster
+  roles:
+    - role: flocker
+      become: yes
+      tags: flocker_manager
+      
