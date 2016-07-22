@@ -1,0 +1,5 @@
+- name: Generate cluster certificate
+  command: flocker-ca initialize "{{ cluster_name }}"
+  args:
+    chdir: /etc/flocker
+    creates: /etc/flocker/cluster.crt

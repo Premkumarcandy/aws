@@ -2,13 +2,11 @@
   remote_user: ubuntu
   hosts: tag_Flocker_true
   gather_facts: true
-  vars:
-    cluster_name: mycluster
+#  vars:
+#    cluster_name: mycluster
   roles:
     - role: flocker
       become: yes
-      tags:
-        - flocker_node
 
 - name: Playbook to generate certs for Flocker
   remote_user: ubuntu
@@ -16,9 +14,15 @@
   gather_facts: true
   vars:
     cluster_name: mycluster
-  roles:
-    - role: flocker
-      become: yes
-      tags:
-        - flocker_manager
+  tasks:
+    - name: Generate cluster certificate
+      command: flocker-ca initialize "{{ cluster_name }}"
+      args:
+        chdir: /etc/flocker
+        creates: /etc/flocker/cluster.crt
+                    
+ # roles:
+ #   - role: flocker
+ #     become: yes
+
       
