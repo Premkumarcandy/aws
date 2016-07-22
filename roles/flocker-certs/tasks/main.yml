@@ -21,3 +21,10 @@
   args:
     chdir: /etc/flocker
     creates: /etc/flocker/control-service.key
+
+- name: Copy Remote-To-Remote (from serverA to serverB)
+  synchronize:
+    src: /etc/flocker/cluster.crt
+    dest: /etc/flocker/cluster.crt
+  delegate_to: "{{ items }}"
+  with_items: groups['tag_Flocker_true']
