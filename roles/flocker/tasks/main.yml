@@ -23,6 +23,7 @@
   apt:
     name: "{{ item }}"
     state: present
+    allow_unauthenticated: yes
   with_items:
     - clusterhq-flocker-node
     - clusterhq-flocker-docker-plugin
