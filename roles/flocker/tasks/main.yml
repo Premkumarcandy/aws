@@ -9,7 +9,8 @@
 
 - name: add repo
   apt_repository:
-    repo: 'deb https://clusterhq-archive.s3.amazonaws.com/ubuntu/wily/x86_64/'
+#    repo: 'deb https://clusterhq-archive.s3.amazonaws.com/ubuntu/wily/x86_64/'
+    repo: "deb https://clusterhq-archive.s3.amazonaws.com/ubuntu/{{ ansible_distribution_version }}/$(ARCH) /"
 #    repo: "deb https://clusterhq-archive.s3.amazonaws.com/ubuntu/{{ansible_distribution_release}}/{{ ansible_machine }}/"
     state: present
 
