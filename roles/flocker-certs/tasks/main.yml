@@ -1,0 +1,11 @@
+- name: Generate cluster certificate
+  command: flocker-ca initialize "{{ cluster_name }}"
+  args:
+    chdir: /etc/flocker
+    creates: /etc/flocker/cluster.crt
+
+- name: Generate authentication certificates for the control service and agent nodes
+  command: flocker-ca create-control-certificate "{{ ec2_private_dns_name }}"
+  args:
+    chdir: /etc/flocker
+    creates: "/etc/flocker/control-{{ ec2_private_dns_name }}.crt"

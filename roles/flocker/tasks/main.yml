@@ -37,9 +37,3 @@
 #    owner: root or flocker
 # group:
 
-#f Exec once and only on manager1  
-#- name: Generate cluster certificate
-#  command: flocker-ca initialize "{{ cluster_name }}"
-#  args:
-#    chdir: /etc/flocker
-#    creates: /etc/flocker/cluster.crt

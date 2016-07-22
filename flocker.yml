@@ -15,15 +15,8 @@
   vars:
     cluster_name: mycluster
   tasks:
-    - name: Generate cluster certificate
-      command: flocker-ca initialize "{{ cluster_name }}"
-      args:
-        chdir: /etc/flocker
-        creates: /etc/flocker/cluster.crt
+    - include: 
+  roles:
+    - role: flocker-certs
       become: yes
-                    
- # roles:
- #   - role: flocker
- #     become: yes
-
-      
+     
