@@ -9,4 +9,15 @@
   args:
     chdir: /etc/flocker
     creates: "/etc/flocker/control-{{ ec2_private_dns_name }}.crt"
-#  with_items: "{{ flocker_nodes }}"
+
+- name: Rename auth certs for control service and nodes
+  command: mv "control-{{ ec2_private_dns_name }}.crt" control-service.crt
+  args:
+    chdir: /etc/flocker
+    creates: /etc/flocker/control-service.crt
+
+- name: Rename auth certs for control service and nodes
+  command: mv "control-{{ ec2_private_dns_name }}.key" control-service.key
+  args:
+    chdir: /etc/flocker
+    creates: /etc/flocker/control-service.key
