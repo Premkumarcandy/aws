@@ -24,18 +24,23 @@ security_group:
   - name: ssh
     port: 22
     proto: tcp
+    cidr_ip: "{{ vpc.cidr_block }}"
   - name: http
     port: 80
     proto: tcp
+    cidr_ip: "{{ vpc.cidr_block }}"
   - name: https
     port: 443
     proto: tcp
+    cidr_ip: "{{ vpc.cidr_block }}"
   - name: mysql
     port: 3306
     proto: tcp
+    cidr_ip: "{{ vpc.cidr_block }}"
   - name: redis
     port: 6379
     proto: tcp
+    cidr_ip: "{{ vpc.cidr_block }}"
 redis:
   state: present
   node_type: cache.t2.micro
@@ -68,3 +73,13 @@ jump:
   instance_type: 't2.nano'
   source_ami: 'ami-7172b611'
 #
+flocker:
+  security_group:
+    - name: flocker4523
+      port: 4523
+      proto: tcp
+      cidr_ip: "{{ vpc.cidr_block }}"
+    - name: flocker4524
+      port: 4524
+      proto: tcp
+      cidr_ip: "{{ vpc.cidr_block }}"

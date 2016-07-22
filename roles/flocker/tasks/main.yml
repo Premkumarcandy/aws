@@ -1,0 +1,53 @@
+- name: Install packages
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - apt-transport-https
+    - software-properties-common
+
+- name: add repo
+  apt_repository:
+    repo: "deb https://clusterhq-archive.s3.amazonaws.com/ubuntu/{{ansible_distribution_release}}/{{ ansible_machine }}/"
+    state: present
+
+- name: copy apt config
+  copy:
+    src: buildbot-700
+    dest: /etc/apt/preferences.d/buildbot-700
+    owner: root
+    mode: 0644
+
+    
+    #add-apt-repository -y "deb https://clusterhq-archive.s3.amazonaws.com/ubuntu/$(lsb_release --release --short)/\$(ARCH) /"
+#cat <<EOF > /tmp/apt-pref
+#Package: *
+#Pin: origin clusterhq-archive.s3.amazonaws.com
+#Pin-Priority: 700
+#EOF
+#mv /tmp/apt-pref /etc/apt/preferences.d/buildbot-700
+#apt-get update
+#apt-get -y install --force-yes clusterhq-flocker-node
+#sudo apt-get install -y --force-yes clusterhq-flocker-docker-plugin
+
+#- name: Creating Security Group
+#  ec2_group:
+#    name: "{{ item.name }}-{{ vpc.vpc_id }}"
+#    description: "{{ item.name }}"
+#    vpc_id: "{{ vpc.vpc_id }}"
+#    rules:
+#      - proto: "{{ item.proto }}"
+#        from_port: "{{ item.port }}"
+#        to_port: "{{ item.port }}"
+#        cidr_ip: "{{ item.cidr_ip }}"
+#    rules_egress:
+#      - proto: all
+#        cidr_ip: 0.0.0.0/0
+#  with_items: "{{ flocker.security_group }}"
+#  register: ec2_security_group
+
+#- name: Debug Security Group
+#  debug:
+#    var: ec2_security_group
+

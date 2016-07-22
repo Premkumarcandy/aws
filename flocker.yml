@@ -1,0 +1,11 @@
+- name: Playbook to install Flocker
+#  hosts: tag_Name_manager1
+#  hosts: tag_Flocker_true
+#  connection: local
+  gather_facts: true
+#  vars_files:
+#    - vars/devbrd.yml
+  roles:
+    - role: flocker
+      become: yes
+

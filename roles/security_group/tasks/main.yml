@@ -7,7 +7,7 @@
       - proto: "{{ item.proto }}"
         from_port: "{{ item.port }}"
         to_port: "{{ item.port }}"
-        cidr_ip: 0.0.0.0/0
+        cidr_ip: "{{ item.cidr_ip }}"
     rules_egress:
       - proto: all
         cidr_ip: 0.0.0.0/0

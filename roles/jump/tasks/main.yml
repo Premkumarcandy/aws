@@ -71,4 +71,4 @@
 #  gather_facts: yes
 #  roles:
 #    - google_auth # yum install google-authenticator.x86_64
-
+# install packages: docker, ansible, git
