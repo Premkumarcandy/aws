@@ -43,4 +43,4 @@
   args:
     chdir: /etc/flocker
     creates: /etc/flocker/cluster.crt
- when: ansible_hostname == "*manager*"
+  when: ansible_hostname == "*manager*"
