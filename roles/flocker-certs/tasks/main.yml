@@ -34,5 +34,6 @@
   synchronize:
     src: /etc/flocker/cluster.crt
     dest: /etc/flocker/cluster.crt
-  delegate_to: "{{ hostvars[item]['ansible_eth1']['ipv4']['address'] }}"
-  with_items: "{{ groups['tag_Flocker_true'] }}"
+  delegate_to: "{{ item }}"
+  #"{{ hostvars[item]['ansible_eth1']['ipv4']['address'] }}"
+  with_items: "{{ node_list }}"
