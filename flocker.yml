@@ -2,6 +2,8 @@
   remote_user: ubuntu
   hosts: tag_Flocker_true
   gather_facts: true
+  vars:
+    cluster_name: mycluster
   roles:
     - role: flocker
       become: yes

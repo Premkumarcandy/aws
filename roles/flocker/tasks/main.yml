@@ -25,26 +25,22 @@
     state: present
     allow_unauthenticated: yes
   with_items:
+    - clusterhq-flocker-cli
     - clusterhq-flocker-node
     - clusterhq-flocker-docker-plugin
 
-#- name: Creating Security Group
-#  ec2_group:
-#    name: "{{ item.name }}-{{ vpc.vpc_id }}"
-#    description: "{{ item.name }}"
-#    vpc_id: "{{ vpc.vpc_id }}"
-#    rules:
-#      - proto: "{{ item.proto }}"
-#        from_port: "{{ item.port }}"
-#        to_port: "{{ item.port }}"
-#        cidr_ip: "{{ item.cidr_ip }}"
-#    rules_egress:
-#      - proto: all
-#        cidr_ip: 0.0.0.0/0
-#  with_items: "{{ flocker.security_group }}"
-#  register: ec2_security_group
+- name: Create flocker configs dir
+  file:
+    path: /etc/flocker
+    state: directory
+    mode: 0755
+#    owner: root or flocker
+# group:
 
-#- name: Debug Security Group
-#  debug:
-#    var: ec2_security_group
-
+# Exec once and only on manager1  
+- name: Generate cluster certificate
+  command: flocker-ca initialize "{{ cluster_name }}"
+  args:
+    chdir: /etc/flocker
+    creates: /etc/flocker/cluster.crt
+ when: ansible_hostname == "*manager*"

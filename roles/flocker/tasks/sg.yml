@@ -1,0 +1,19 @@
+#- name: Creating Security Group
+#  ec2_group:
+  #    name: "{{ item.name }}-{{ vpc.vpc_id }}"
+  #    description: "{{ item.name }}"
+  #    vpc_id: "{{ vpc.vpc_id }}"
+  #    rules:
+    #      - proto: "{{ item.proto }}"
+    #        from_port: "{{ item.port }}"
+    #        to_port: "{{ item.port }}"
+    #        cidr_ip: "{{ item.cidr_ip }}"
+    #    rules_egress:
+      #      - proto: all
+      #        cidr_ip: 0.0.0.0/0
+      #  with_items: "{{ flocker.security_group }}"
+      #  register: ec2_security_group
+
+      #- name: Debug Security Group
+      #  debug:
+        #    var: ec2_security_group
