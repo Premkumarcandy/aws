@@ -14,8 +14,6 @@
   gather_facts: true
   vars:
     cluster_name: mycluster
-  tasks:
-    - include: 
   roles:
     - role: flocker-certs
       become: yes
