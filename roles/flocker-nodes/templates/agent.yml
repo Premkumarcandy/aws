@@ -1,6 +1,6 @@
 "version": 1
 "control-service":
-  "hostname": "{{ groups['tag_flocker_manager'] }}"
+  "hostname": "{{ flocker_control_node_ip }}"
   "port": 4524
 dataset:
   backend: "aws"
