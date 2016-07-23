@@ -18,7 +18,8 @@
   roles:
     - role: flocker-certs
       become: yes
-     
+
+      
 - name: Copy certs to the nodes
   remote_user: ubuntu
   hosts: tag_flocker_node
@@ -28,18 +29,24 @@
         src: /tmp/cluster.crt
         dest: /etc/flocker/cluster.crt
 
+        
 - name: Generate certs for the nodes
   remote_user: ubuntu
-  hosts: tag_flocker_node
+  hosts: tag_flocker_manager
   gather_facts: true
   tasks:
     - name: flocker-ca create-node-certificate
       command: flocker-ca create-node-certificate
       args:
         chdir: /etc/flocker
-        creates: /etc/flocker/node.crt
+#        creates: /etc/flocker/*-*-*.crt
       register: node_cert
-        
+      with_items: "{{ groups['tag_flocker_node'] }}"
+
+    - name: Debug node_cert
+      debug:
+        var: node_cert
+
     - name: set fact for node cert
       set_fact:
         cert_id: "{{ node_cert.stdout[node_cert.stdout.index('Created'):node_cert.stdout.index('.')].split(' ')[1] }}"
