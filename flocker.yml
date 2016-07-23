@@ -9,12 +9,15 @@
     - role: flocker
       become: yes
 
+# FIXME: generate all certs on ansible host and then copy to the manager and worker nodes
 - name: Playbook to generate certs for Flocker
   remote_user: ubuntu
+# FIXME: hosts: ansible_host
   hosts: tag_flocker_manager
   gather_facts: true
   vars:
     cluster_name: mycluster
+    api_client_name: api_client
   roles:
     - role: flocker-certs
       become: yes
@@ -29,61 +32,69 @@
         src: /tmp/cluster.crt
         dest: /etc/flocker/cluster.crt
 
-        
-- name: Generate certs for the nodes
-  remote_user: ubuntu
-  hosts: tag_flocker_manager
-  gather_facts: true
-  tasks:
-    - name: flocker-ca create-node-certificate
-      command: flocker-ca create-node-certificate
-      args:
-        chdir: /etc/flocker
+#[ec2-user@ip-10-200-1-75 aws]$ docker-machine scp manager1:/etc/flocker/795ad79e-11ba-41bd-992e-e7b8f3693561.* worker1:/etc/flocker/
+#[ec2-user@ip-10-200-1-75 aws]$ docker-machine scp manager1:/etc/flocker/aaa8a2ea-4f1a-4638-8d02-6c6c5d25e91f.* worker2:/etc/flocker/
+
+#[ec2-user@ip-10-200-1-75 aws]$ docker-machine ssh worker2 cp /etc/flocker/aaa8a2ea-4f1a-4638-8d02-6c6c5d25e91f.crt /etc/flocker/node.crt
+#[ec2-user@ip-10-200-1-75 aws]$ docker-machine ssh worker2 cp /etc/flocker/aaa8a2ea-4f1a-4638-8d02-6c6c5d25e91f.key /etc/flocker/node.key
+
+#[ec2-user@ip-10-200-1-75 aws]$ docker-machine ssh worker1 cp /etc/flocker/795ad79e-11ba-41bd-992e-e7b8f3693561.key /etc/flocker/node.key
+#[ec2-user@ip-10-200-1-75 aws]$ docker-machine ssh worker1 cp /etc/flocker/795ad79e-11ba-41bd-992e-e7b8f3693561.crt /etc/flocker/node.crt
+#- name: Generate certs for the nodes
+#  remote_user: ubuntu
+#  hosts: tag_flocker_manager
+#  gather_facts: true
+#  tasks:
+#    - name: flocker-ca create-node-certificate
+#      command: flocker-ca create-node-certificate
+#      args:
+#        chdir: /etc/flocker
 #        creates: /etc/flocker/*-*-*.crt
-      register: node_cert
-      with_items: "{{ groups['tag_flocker_node'] }}"
+#      register: node_cert
+#      with_items: "{{ groups['tag_flocker_node'] }}"
 
-    - name: Debug node_cert
-      debug:
-        var: node_cert
+#    - name: Debug node_cert
+#      debug:
+#        var: node_cert
 
-    - name: set fact for node cert
-      set_fact:
-        "cert_id_{{ item.item }}": "{{ item.stdout[item.stdout.index('Created'):item.stdout.index('.')].split(' ')[1] }}"
-      with_items: "{{ node_cert.results }}"
+#    - name: set fact for node cert
+#      set_fact:
+#        "cert_id_{{ item.item }}": "{{ item.stdout[item.stdout.index('Created'):item.stdout.index('.')].split(' ')[1] }}"
+#      with_items: "{{ node_cert.results }}"
         
-    - name: Node certificate debug
-      debug:
-        var: "cert_id_{{ item.item }}"
-      with_items: "{{ node_cert.results }}"
+#    - name: Node certificate debug
+#      debug:
+#        var: "cert_id_{{ item.item }}"
+#      with_items: "{{ node_cert.results }}"
 
-    - name: Fetch node keys to ansible host
-      fetch:
-        src: "/etc/flocker/cert_id_{{ item }}.key"
-        dest: "/tmp/cert_id_{{ item }}.key"
-        flat: yes
-      with_items: "{{ groups['tag_flocker_node'] }}"
+#    - name: Fetch node keys to ansible host
+#      fetch:
+#        src: "/etc/flocker/{{ {{ item.stdout[item.stdout.index('Created'):item.stdout.index('.')].split(' ')[1] }} }}.key"
+#        dest: "/tmp/{{ {{ item.stdout[item.stdout.index('Created'):item.stdout.index('.')].split(' ')[1] }} }}.key"
+#        flat: yes
+#      with_items: "{{ node_cert.results }}"
+#      with_items: "{{ groups['tag_flocker_node'] }}"
 
-    - name: Fetch node certs to ansible host
-      fetch:
-        src: "/etc/flocker/cert_id_{{ item }}.crt"
-        dest: "/tmp/cert_id_{{ item }}.crt"
-        flat: yes
-      with_items: "{{ groups['tag_flocker_node'] }}"
+#    - name: Fetch node certs to ansible host
+#      fetch:
+#        src: "/etc/flocker/cert_id_{{ item }}.crt"
+#        dest: "/tmp/cert_id_{{ item }}.crt"
+#        flat: yes
+#      with_items: "{{ groups['tag_flocker_node'] }}"
 
 
-- name: Copy certs to the nodes
-  remote_user: ubuntu
-  hosts: tag_flocker_node
-  gather_facts: true
-  tasks:
-    - name: Copy node crt and key to the nodes
-      copy:
-        src: "/tmp/cert_id_{{ ec2_private_ip_address }}.{{ item }}"
-        dest: "/etc/flocker/node.{{ item }}"
-      with_items:
-        - crt
-        - key
+#- name: Copy certs to the nodes
+#  remote_user: ubuntu
+#  hosts: tag_flocker_node
+#  gather_facts: true
+#  tasks:
+#    - name: Copy node crt and key to the nodes
+#      copy:
+#        src: "/tmp/cert_id_{{ ec2_private_ip_address }}.{{ item }}"
+#        dest: "/etc/flocker/node.{{ item }}"
+#      with_items:
+#        - crt
+#        - key
       
 #    - name: rename cert_id to node_crt
 #      command: mv "{{ cert_id }}.{{ item }}" "node.{{ item }}"

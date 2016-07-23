@@ -30,6 +30,12 @@
     dest: /tmp/cluster.crt
     flat: yes
 
+- name: Generate API certs
+  command: flocker-ca create-api-certificate "{{ api_client_name }}"
+  args:
+    chdir: /etc/flocker
+    creates: "{{ api_client_name }}.crt"
+    
 #- name: set fact groups
 #  set_fact:
 #    node_list: "{{ groups['tag_Flocker_true'] }}"
