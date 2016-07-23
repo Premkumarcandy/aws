@@ -49,14 +49,16 @@
 
     - name: set fact for node cert
       set_fact:
-        cert_id: "{{ node_cert.stdout[node_cert.stdout.index('Created'):node_cert.stdout.index('.')].split(' ')[1] }}"
-
+        cert_id: "{{ item.stdout[item.stdout.index('Created'):item.stdout.index('.')].split(' ')[1] }}"
+      with_items: "{{ node_cert.results }}"
+        
     - name: Node certificate debug
       debug:
         var: cert_id
 
-    - name: rename cert_id to node_crt
-      command: mv "{{ cert_id }}.{{ item }}" "node.{{ item }}"
-      args:
-        chdir: /etc/flocker
-        creates: "/etc/flocker/node.{{ item }}"
+#    - name: rename cert_id to node_crt
+#      command: mv "{{ cert_id }}.{{ item }}" "node.{{ item }}"
+#      args:
+#        chdir: /etc/flocker
+#        creates: "/etc/flocker/node.{{ item }}"
+#      with_items: "{{ cert_id }}"
