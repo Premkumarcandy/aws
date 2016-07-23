@@ -36,4 +36,4 @@
     state: directory
     mode: 0755
     owner: ubuntu
-    recurse: true
+#    recurse: true

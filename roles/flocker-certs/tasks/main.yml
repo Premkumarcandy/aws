@@ -35,7 +35,21 @@
   args:
     chdir: /etc/flocker
     creates: "{{ api_client_name }}.crt"
-    
+
+- name: Generate Docker Plugin certs
+  command: flocker-ca create-api-certificate plugin
+  args:
+    chdir: /etc/flocker
+    creates: plugin.crt
+
+- name: Fetch plugin.crt to ansible host
+  fetch:
+    src: "/etc/flocker/plugin.{{ item }}"
+    dest: "/tmp/plugin.{{ item }}"
+    flat: yes
+  with_items:
+    - key
+    - crt
 #- name: set fact groups
 #  set_fact:
 #    node_list: "{{ groups['tag_Flocker_true'] }}"
