@@ -19,3 +19,11 @@
     - role: flocker-certs
       become: yes
      
+- name: Copy certs to the nodes
+  remote_user: ubuntu
+  hosts: tag_flocker_node
+  gather_facts: true
+  tasks:
+    - copy:
+        src: /tmp/cluster.crt
+        dest: /etc/flocker/cluster.crt
