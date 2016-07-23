@@ -49,13 +49,42 @@
 
     - name: set fact for node cert
       set_fact:
-        cert_id: "{{ item.stdout[item.stdout.index('Created'):item.stdout.index('.')].split(' ')[1] }}"
+        "cert_id_{{ item.item }}": "{{ item.stdout[item.stdout.index('Created'):item.stdout.index('.')].split(' ')[1] }}"
       with_items: "{{ node_cert.results }}"
         
     - name: Node certificate debug
       debug:
-        var: cert_id
+        var: "cert_id_{{ item.item }}"
+      with_items: "{{ node_cert.results }}"
 
+    - name: Fetch node keys to ansible host
+      fetch:
+        src: "/etc/flocker/cert_id_{{ item }}.key"
+        dest: "/tmp/cert_id_{{ item }}.key"
+        flat: yes
+      with_items: "{{ groups['tag_flocker_node'] }}"
+
+    - name: Fetch node certs to ansible host
+      fetch:
+        src: "/etc/flocker/cert_id_{{ item }}.crt"
+        dest: "/tmp/cert_id_{{ item }}.crt"
+        flat: yes
+      with_items: "{{ groups['tag_flocker_node'] }}"
+
+
+- name: Copy certs to the nodes
+  remote_user: ubuntu
+  hosts: tag_flocker_node
+  gather_facts: true
+  tasks:
+    - name: Copy node crt and key to the nodes
+      copy:
+        src: "/tmp/cert_id_{{ ec2_private_ip_address }}.{{ item }}"
+        dest: "/etc/flocker/node.{{ item }}"
+      with_items:
+        - crt
+        - key
+      
 #    - name: rename cert_id to node_crt
 #      command: mv "{{ cert_id }}.{{ item }}" "node.{{ item }}"
 #      args:
