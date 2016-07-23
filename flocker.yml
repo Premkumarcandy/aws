@@ -52,7 +52,7 @@
         - flocker-container-agent
         - flocker-docker-plugin
       become: yes
-  role:
+  roles:
     - flocker-nodes
     
 #[ec2-user@ip-10-200-1-75 aws]$ docker-machine scp manager1:/etc/flocker/795ad79e-11ba-41bd-992e-e7b8f3693561.* worker1:/etc/flocker/
