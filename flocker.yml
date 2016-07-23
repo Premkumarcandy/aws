@@ -27,3 +27,26 @@
     - copy:
         src: /tmp/cluster.crt
         dest: /etc/flocker/cluster.crt
+
+- name: Generate certs for the nodes
+  remote_user: ubuntu
+  hosts: tag_flocker_node
+  gather_facts: true
+  tasks:
+    - command: flocker-ca create-node-certificate
+      args:
+        chdir: /etc/flocker
+        creates: /etc/flocker/node.crt
+      register: node_cert
+        
+    - set_fact:
+        cert_id: "{{ node_cert.stdout[node_cert.stdout.index('Created'):node_cert.stdout.index('.')].split(' ')[1] }}"
+
+    - name: Node certificate output
+      debug:
+        var: cert_id
+
+    - command: mv "{{ cert_id }}.{{ item }}" "node.{{ item }}"
+      args:
+        chdir: /etc/flocker
+        creates: "/etc/flocker/node.{{ item }}"

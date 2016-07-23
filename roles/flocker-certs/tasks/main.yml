@@ -8,33 +8,27 @@
   command: flocker-ca create-control-certificate "{{ ec2_private_dns_name }}"
   args:
     chdir: /etc/flocker
-    creates: "/etc/flocker/control-{{ ec2_private_dns_name }}.{{ item }}"
+    creates: "/etc/flocker/control-{{ ec2_private_dns_name }}.crt"
+
+- name: Rename auth certs for control service and nodes
+  command: mv "control-{{ ec2_private_dns_name }}.{{ item }}" "control-service.{{ item }}"
+  args:
+    chdir: /etc/flocker
+    creates: "/etc/flocker/control-service.{{ item }}"
   with_items:
     - crt
     - key
 
-#- name: Rename auth certs for control service and nodes
-#  command: mv "control-{{ ec2_private_dns_name }}.crt" control-service.crt
-#  args:
-#    chdir: /etc/flocker
-#    creates: /etc/flocker/control-service.crt
-
-- name: Rename auth certs for control service and nodes
-  command: mv "control-{{ ec2_private_dns_name }}.key" control-service.key
-  args:
-    chdir: /etc/flocker
-    creates: /etc/flocker/control-service.key
-
+- name: Set mode 0600 on control-service.key
+  file:
+    path: /etc/flocker/control-service.key
+    mode: 0600
+    
 - name: Copy cluster.crt to ansible host
   fetch:
     src: /etc/flocker/cluster.crt
     dest: /tmp/cluster.crt
 
-#- name: Copy cluster.crt to the nodes
-#  copy:
-#    src: /tmp/cluster.crt 
-#    dest: /etc/flocker/cluster.crt
-      
 #- name: set fact groups
 #  set_fact:
 #    node_list: "{{ groups['tag_Flocker_true'] }}"
