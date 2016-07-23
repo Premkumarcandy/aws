@@ -50,6 +50,13 @@
   with_items:
     - key
     - crt
+
+- name: Enable flocker-control service
+  service:
+    name: flocker-control
+    enabled: yes
+    state: started
+    
 #- name: set fact groups
 #  set_fact:
 #    node_list: "{{ groups['tag_Flocker_true'] }}"
