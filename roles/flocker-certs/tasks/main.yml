@@ -27,7 +27,8 @@
 - name: Copy cluster.crt to ansible host
   fetch:
     src: /etc/flocker/cluster.crt
-    dest: /tmp/cluster.crt
+    dest: /tmp/
+    flat: yes
 
 #- name: set fact groups
 #  set_fact:

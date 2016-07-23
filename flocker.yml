@@ -33,20 +33,23 @@
   hosts: tag_flocker_node
   gather_facts: true
   tasks:
-    - command: flocker-ca create-node-certificate
+    - name: flocker-ca create-node-certificate
+      command: flocker-ca create-node-certificate
       args:
         chdir: /etc/flocker
         creates: /etc/flocker/node.crt
       register: node_cert
         
-    - set_fact:
+    - name: set fact for node cert
+      set_fact:
         cert_id: "{{ node_cert.stdout[node_cert.stdout.index('Created'):node_cert.stdout.index('.')].split(' ')[1] }}"
 
-    - name: Node certificate output
+    - name: Node certificate debug
       debug:
         var: cert_id
 
-    - command: mv "{{ cert_id }}.{{ item }}" "node.{{ item }}"
+    - name: rename cert_id to node_crt
+      command: mv "{{ cert_id }}.{{ item }}" "node.{{ item }}"
       args:
         chdir: /etc/flocker
         creates: "/etc/flocker/node.{{ item }}"
