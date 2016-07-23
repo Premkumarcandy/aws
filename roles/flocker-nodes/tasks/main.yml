@@ -1,0 +1,12 @@
+- name: Copy agent.yml no the nodes
+  template:
+    src: agent.yml
+    dest: /etc/flocker/agent.yml
+
+- name: set fact manager
+  set_fact:
+    manager_dns_or_ip: "{{ groups['tag_flocker_manager'] }}"
+
+- name: get fact manager
+  debug:
+    var: manager_dns_or_ip

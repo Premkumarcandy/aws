@@ -1,0 +1,10 @@
+"version": 1
+"control-service":
+  "hostname": "{{ groups['tag_flocker_manager'] }}"
+  "port": 4524
+dataset:
+  backend: "aws"
+  region: "{{ aws.region }}"
+  zone: "{{ aws.region }}{{ aws.zone }}"
+  access_key_id: "{{ aws.access_key }}"
+  secret_access_key: "{{ aws.secret_key }}"

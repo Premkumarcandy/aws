@@ -23,10 +23,16 @@
       become: yes
 
       
-- name: Copy certs to the nodes
+- name: Common tasks for the nodes
   remote_user: ubuntu
   hosts: tag_flocker_node
   gather_facts: true
+  vars:
+    aws:
+      region: us-west-2
+      zone: c
+      access_key: XXXXXXXXXXX
+      secret_key: XXXXXXXXXXX
   tasks:
     - copy:
         src: "/tmp/{{ item }}"
@@ -46,7 +52,9 @@
         - flocker-container-agent
         - flocker-docker-plugin
       become: yes
-        
+  role:
+    - flocker-nodes
+    
 #[ec2-user@ip-10-200-1-75 aws]$ docker-machine scp manager1:/etc/flocker/795ad79e-11ba-41bd-992e-e7b8f3693561.* worker1:/etc/flocker/
 #[ec2-user@ip-10-200-1-75 aws]$ docker-machine scp manager1:/etc/flocker/aaa8a2ea-4f1a-4638-8d02-6c6c5d25e91f.* worker2:/etc/flocker/
 
