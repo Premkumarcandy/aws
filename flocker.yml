@@ -34,7 +34,7 @@
       with_items:
         - cluster.crt
         - plugin.key
-        - plugign.crt
+        - plugin.crt
 
     - name: Enable flocker-control service
       service:
