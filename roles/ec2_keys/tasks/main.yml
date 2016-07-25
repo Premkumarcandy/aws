@@ -2,6 +2,5 @@
   ec2_key:
     state: "{{ item.state }}"
     name: "{{ item.name  }}"
-    key_material: "{{ item }}"
-  with_file: "{{ item.key_material }}"
+    key_material: "{{ item.key_material }}"
   with_items: "{{ create_ec2_key }}"
