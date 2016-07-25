@@ -1,36 +1,30 @@
-#- name: Creating Security Group
-#  ec2_group:
-#    name: "{{ name }}rds"
-#    description: "{{ name }}rds"
-#    vpc_id: "{{ vpc.vpc_id }}"
-#    rules:
-#      - proto: tcp
-#        from_port: 3306
-#        to_port: 3306
-#        group_name: default
-#        cidr_ip: 0.0.0.0/0
-#    rules_egress:
-#      - proto: all
-#        cidr_ip: 0.0.0.0/0
-#  register: ec2sg
+- name: Creating rds_subnet_group
+  rds_subnet_group:
+    state: present
+    name: "{{ env.name }}{{ cluster.name }}"
+    description: "{{ name }} Subnet Group"
+    subnets:
+      - "{{ ec2_vpc.subnets[0].id }}"
+      - "{{ ec2_vpc.subnets[1].id }}"
+  register: rds_subnet_group
 
-- name: Debug Security Group
+- name: Debug rds_subnet_group
   debug:
-    var: ec2sg
-        
-- name: Creating RDS
+    var: rds_subnet_group
+
+- name: Creating RDS instance
   rds:
     command: create
-    instance_name: "{{ name }}dbm01"
+    instance_name: "{{ env.name }}{{ cluster.name }}dbm01"
     db_engine: "{{ rds.db_engine }}"
     size: "{{ rds.size }}"
     instance_type: "{{ rds.instance_type }}"
     username: "{{ rds.username }}"
     password: SuperStrongPassword
     # rds_subnet_group
-    subnet: "{{ name }}"
+    # fix: get it from rds_subnet_group var
+    subnet: "{{ env.name }}{{ cluster.name }}"
     vpc_security_groups: "{{ mysql_sg_id }}"
- #   vpc_security_groups: "{{ ec2sg.group_id }}" 
     tags:
       env: "{{ env.name }}"
       cluster: "{{ cluster.name }}"

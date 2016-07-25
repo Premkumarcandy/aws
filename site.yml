@@ -13,7 +13,7 @@
 #    - rds_subnet_group
 #    - ec_subnet_group
 #    - redis
-#    - rds
+    - rds
 #    - elb
     # should run inside
 #    - create_db
