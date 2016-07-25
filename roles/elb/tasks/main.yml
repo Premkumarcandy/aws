@@ -30,9 +30,9 @@
         from_port: 80
         to_port: 80
         group_id: "{{ ec2_elb.elb.security_group_ids[0] }}"
-      rules_egress:
-        - proto: all
-          cidr_ip: 0.0.0.0/0
+    rules_egress:
+      - proto: all
+        cidr_ip: 0.0.0.0/0
   register: ec2_elb_sg
 
 # then use ec2_elb_sg for sg on web nodes
