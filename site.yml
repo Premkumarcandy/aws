@@ -14,7 +14,7 @@
 #    - ec_subnet_group
     - redis
     - rds
-#    - elb
+    - elb
     # should run inside
 #    - create_db
     # - create_ec2_web
