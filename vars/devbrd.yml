@@ -57,10 +57,10 @@ create_db:
     user: mysqluser
     password: mysqlpassword
 create_ec2_key:
-  state: present
-  name: 'knife-west2'
-  # located at role_name/files/file_name
-  key: 'knife-west2.pub'
+  keys:
+    - name: 'knife-west2'
+      key_material: 'knife-west2.pub'
+      state: present 
 #ec2:
 #  key_name: "{{ create_ec2_key.name }}"
 #  instance_type: 't2.nano'

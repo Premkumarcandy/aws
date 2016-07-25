@@ -8,7 +8,7 @@
     # may run outside
     - vpc
     - security_group
-#    - create_ec2_key
+    - create_ec2_key
 #    - jump
 #    - rds_subnet_group
 #    - ec_subnet_group

@@ -1,7 +1,7 @@
 - name: Creating ec2 key
   ec2_key:
-    state: present
-    name: "{{ create_ec2_key.name  }}"
-    key_material: "{{ item }}"
-  with_file: "{{ create_ec2_key.key }}"
-   
+    state: "{{ item.state }}"
+    name: "{{ item.name  }}"
+    key_material: "{{ item.key_material }}"
+#  with_file: "{{ item.key }}"
+  with_items: "{{ create_ec2_key.keys }}"
