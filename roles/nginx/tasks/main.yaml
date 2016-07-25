@@ -1,0 +1,44 @@
+---
+- name: yum install nginx
+  yum: 
+    name: 'http://nginx.org/packages/centos/6/x86_64/RPMS/nginx-1.8.0-1.el6.ngx.x86_64.rpm'
+    state: present
+#    name: 'http://nginx.org/packages/centos/6/x86_64/RPMS/nginx-1.8.1-1.el6.ngx.x86_64.rpm'
+
+- name: Remove nginx defaults
+  file: 
+    path: '/etc/nginx/conf.d'
+    state: absent
+
+- name: Create nginx conf.d
+  file: 
+    path: '/etc/nginx/conf.d'
+    state: directory
+    owner: root 
+    group: root 
+    mode: 0755
+
+- name: Copy nginx.conf
+  template: 
+    dest: '/etc/nginx/nginx.conf'
+    src: 'nginx.conf'
+    owner: root 
+    group: root 
+    mode: 0644
+  notify: 
+        - reload nginx
+
+- name: Copy texture.conf
+  template: 
+    dest: '/etc/nginx/conf.d/texture.conf'
+    src: 'conf.d/texture.conf'
+    owner: root 
+    group: root 
+    mode: 0644
+  notify: 
+    - reload nginx
+
+- service: 
+    name: nginx
+    state: started
+    enabled: yes

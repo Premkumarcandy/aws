@@ -1,0 +1,17 @@
+- name: Playbook to deploy WP to AWS Environment
+  hosts: tag_Name_devbrdweb
+#  connection: local
+  gather_facts: true
+  roles:
+#    - common
+    - nginx
+#    - php
+#    - jump
+#    - rds_subnet_group
+#    - ec_subnet_group
+#    - create_db
+    # - deploy_without_docker
+    # echo 'flushall' | nc devbrdred.x7pqnp.0001.usw2.cache.amazonaws.com 6379
+    # - deploy_with_docker
+
+# FIX: security group for RDS

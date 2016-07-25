@@ -7,16 +7,17 @@
   roles:
     # may run outside
     - vpc
+    - nat
     - security_group
-    - ec2_keys
+    - ec2_keys    
 #    - jump
 #    - rds_subnet_group
 #    - ec_subnet_group
-    - redis
-    - rds
-    - elb
+#    - redis
+#    - rds
+#    - elb
     # should run inside
-    - web
+#    - web
 #    - create_db
     # - deploy_without_docker
     # echo 'flushall' | nc devbrdred.x7pqnp.0001.usw2.cache.amazonaws.com 6379

@@ -1,0 +1,6 @@
+- name: NETWORK | allocate a new elastic IP without associating it to anything
+  ec2_eip:
+    state: present
+    in_vpc: yes
+    reuse_existing_ip_allowed: yes
+    
