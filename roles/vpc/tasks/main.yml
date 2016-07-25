@@ -9,8 +9,8 @@
     subnets: "{{ vpc.subnets }}"
     internet_gateway: True
     route_tables: "{{ vpc.route_tables }}"
-  register: vpc
+  register: ec2_vpc
 
-- name: Debug VPC
-  debug: var=vpc
-
+- name: Debug ec2_vpc
+  debug:
+    var: ec2_vpc

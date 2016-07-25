@@ -8,15 +8,15 @@
     # may run outside
     - vpc
     - security_group
-    - create_ec2_key
-    - jump
-    - rds_subnet_group
-    - ec_subnet_group
-    - redis
-    - rds
+#    - create_ec2_key
+#    - jump
+#    - rds_subnet_group
+#    - ec_subnet_group
+#    - redis
+#    - rds
 #    - elb
     # should run inside
-    - create_db
+#    - create_db
     # - create_ec2_web
     # - deploy_without_docker
     # echo 'flushall' | nc devbrdred.x7pqnp.0001.usw2.cache.amazonaws.com 6379
