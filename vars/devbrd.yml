@@ -60,7 +60,6 @@ create_ec2_key:
   - name: 'knife-west2'
     key_material: 'knife-west2.pub'
     state: present
-    
 #ec2:
 #  key_name: "{{ create_ec2_key.name }}"
 #  instance_type: 't2.nano'
