@@ -68,6 +68,7 @@ ec2_keys:
 elb:
   state: present
   name: "{{ env.name }}{{ cluster.name }}elb"
+  scheme: 'internet-facing'
   cross_az_load_balancing: yes
   #
 name: "{{ env.name }}{{ cluster.name }}"
