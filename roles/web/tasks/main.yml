@@ -1,7 +1,7 @@
 - name: Provision ec2 instances for Web nodes
   ec2:
-    vpc_subnet_id: "{{ ec2_vpc.vpc_id }}"
-    group: "{{ http_sg_id }}"
+    vpc_subnet_id: "{{ item }}"
+    group_id: "{{ http_sg_id }}"
     image: "{{ web.image }}"
     instance_type: "{{ web.instance_type }}"
     key_name: "{{ web.key_name }}"
@@ -10,8 +10,9 @@
       Env: "{{ env.name }}"
     count_tag:
       Name: "{{ env.name }}{{ cluster.name }}web"
-    exact_count: 2
+    exact_count: 1
     wait: true
+    with_items: "{{ vpc_subnets }}"
   register: ec2_web
 
 - name: Debug ec2_web

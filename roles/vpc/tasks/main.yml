@@ -14,3 +14,13 @@
 - name: Debug ec2_vpc
   debug:
     var: ec2_vpc
+
+- name: set fact vpc_subnets
+  set_fact:
+    vpc_subnets:
+      - "{{ ec2_vpc.subnets[0].id }}"
+      - "{{ ec2_vpc.subnets[1].id }}"
+
+- name: debug vpc_subnets
+  debug:
+    var: vpc_subnets
