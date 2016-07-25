@@ -65,6 +65,11 @@ ec2_keys:
 #  instance_type: 't2.nano'
 #  source_ami: 'ami-7172b611'
 #
+elb:
+  state: present
+  name: "{{ env.name }}{{ cluster.name }}elb"
+  cross_az_load_balancing: yes
+  #
 name: "{{ env.name }}{{ cluster.name }}"
 jump:
   state: present

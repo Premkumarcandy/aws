@@ -2,14 +2,14 @@
 #    health_check_type: 'EC2'
 #    health_check_type: 'ELB'
 
-- name: Create LB
+- name: Create ELB
   ec2_elb_lb:
-    name: "{{ env.name }}{{ cluster.name }}elb"
-    state: present
+    name: "{{ elb.name }}"
+    state: "{{ elb.state }}"
     zones:
-      - "{{ ec_vpc.subnets[0].az }}"
-      - "{{ ec_vpc.subnets[1].az }}"
-    cross_az_load_balancing: yes
+      - "{{ ec2_vpc.subnets[0].az }}"
+      - "{{ ec2_vpc.subnets[1].az }}"
+    cross_az_load_balancing: "{{ elb.cross_az_load_balancing }}"
     listeners:
       - protocol: http
         load_balancer_port: 80
