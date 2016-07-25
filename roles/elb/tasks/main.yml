@@ -20,7 +20,9 @@
       unhealthy_threshold: 2
       healthy_threshold: 10
     idle_timeout: 60
-    security_group_ids: "{{ http_sg_id }}"
+    security_group_ids:
+      - "{{ http_sg_id }}"
+      - "{{ https_sg_id }}"
   register: ec2_elb
 
 - name: Debug ec2elb
