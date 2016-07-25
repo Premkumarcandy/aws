@@ -1,6 +1,6 @@
 - name: Provision ec2 instances for Web nodes
   ec2:
-    vpc_subnet_id: "{{ item }}"
+    vpc_subnet_id: "{{ vpc_subnets[0] }}"
     group_id: "{{ http_sg_id }}"
     image: "{{ web.image }}"
     instance_type: "{{ web.instance_type }}"
@@ -12,7 +12,7 @@
       Name: "{{ env.name }}{{ cluster.name }}web"
     exact_count: 2
     wait: true
-  with_items: "{{ vpc_subnets }}"
+#  with_items: "{{ vpc_subnets }}"
   register: ec2_web
 
 - name: Debug ec2_web
@@ -21,14 +21,14 @@
   
 #- name: Add new instance to host group
 #  add_host: 
-#    hostname: "{{ item.public_ip }}" 
-#    groupname: launched
-#  with_items: ec2web.tagged_instances
+#    hostname: "{{ item.private_ip }}" 
+#    groupname: ec2_web_instances
+#  with_items: ec2_web.tagged_instances
 
-#- name: Wait for SSH to come up
-#  wait_for: 
-#    host: "{{ item.public_dns_name }}" 
-#    port: 22 
-#    delay: 60 
-#    state: started
-#  with_items: ec2.tagged_instances
+- name: Wait for SSH to come up
+  wait_for: 
+    host: "{{ item.private_ip }}" 
+    port: 22 
+    delay: 60 
+    state: started
+  with_items: ec2_web.tagged_instances
