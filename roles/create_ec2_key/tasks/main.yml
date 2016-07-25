@@ -3,6 +3,6 @@
     state: "{{ item.state }}"
     name: "{{ item.name  }}"
     key_material: "{{ item.key_material }}"
-  with_items: "{{ create_ec2_key.keys }}"
+  with_items: "{{ create_ec2_key }}"
 #  with_file: "{{ item.key }}"
 
