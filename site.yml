@@ -16,8 +16,8 @@
     - rds
     - elb
     # should run inside
+    - web
 #    - create_db
-    # - create_ec2_web
     # - deploy_without_docker
     # echo 'flushall' | nc devbrdred.x7pqnp.0001.usw2.cache.amazonaws.com 6379
     # - deploy_with_docker
