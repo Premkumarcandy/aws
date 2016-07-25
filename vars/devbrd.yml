@@ -71,6 +71,11 @@ elb:
   scheme: 'internet-facing'
   cross_az_load_balancing: yes
   #
+web:
+  image: 'ami-7172b611'
+  instance_type: 't2.nano'
+  key_name: "{{ ec2_keys[0].name }}"
+#
 name: "{{ env.name }}{{ cluster.name }}"
 jump:
   state: present
