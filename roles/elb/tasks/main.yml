@@ -6,9 +6,12 @@
   ec2_elb_lb:
     name: "{{ elb.name }}"
     state: "{{ elb.state }}"
-    zones:
-      - "{{ ec2_vpc.subnets[0].az }}"
-      - "{{ ec2_vpc.subnets[1].az }}"
+    subnets:
+      - "{{ ec2_vpc.subnets[0].id }}"
+      - "{{ ec2_vpc.subnets[1].id }}"
+#    zones:
+#      - "{{ ec2_vpc.subnets[0].az }}"
+#      - "{{ ec2_vpc.subnets[1].az }}"
     cross_az_load_balancing: "{{ elb.cross_az_load_balancing }}"
     listeners:
       - protocol: http
