@@ -1,6 +1,20 @@
+- name: Creating elasticache_subnet_group
+  elasticache_subnet_group:
+    state: present
+    name: "{{ env.name }}{{ cluster.name }}"
+    description: "{{ name }} Subnet Group"
+    subnets:
+      - "{{ ec2_vpc.subnets[0].id }}"
+      - "{{ ec2_vpc.subnets[1].id }}"
+  register: elasticache_subnet_group
+  
+- name: Debug elasticache_subnet_group
+  debug:
+    var: elasticache_subnet_group
+
 - name: Creating elasticache Redis server
   elasticache:
-    name: "{{ name }}red"
+    name: "{{ env.name }}{{ cluster.name }}red"
     state: "{{ redis.state }}"
     engine: redis
     node_type: "{{ redis.node_type }}"
@@ -8,7 +22,8 @@
     cache_port: 6379
     # try to disable
     cache_engine_version: 2.8.24
-    cache_subnet_group: "{{ name }}"
+    # FIX use elasticache_subnet_group var
+    cache_subnet_group: "{{ env.name }}{{ cluster.name }}"
     security_group_ids:
       - "{{ redis_sg_id }}"
   register: redis

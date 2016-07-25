@@ -12,7 +12,7 @@
 #    - jump
 #    - rds_subnet_group
 #    - ec_subnet_group
-#    - redis
+    - redis
     - rds
 #    - elb
     # should run inside
