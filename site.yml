@@ -5,6 +5,7 @@
 #  vars_files:
 #    - vars/devbrd.yml
   roles:
+    # may run outside
     - vpc
     - security_group
     - create_ec2_key
@@ -13,9 +14,9 @@
     - ec_subnet_group
     - redis
     - rds
-    # execute create_db from jump box
-    # - create_db
 #    - elb
+    # should run inside
+    - create_db
     # - create_ec2_web
     # - deploy_without_docker
     # echo 'flushall' | nc devbrdred.x7pqnp.0001.usw2.cache.amazonaws.com 6379

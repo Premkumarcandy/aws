@@ -6,7 +6,7 @@
     name: '{{ create_db.mysql.user }}'
     state: present
 
-- name: Create db user
+- name: Grant access to db for mysqluser
   mysql_user:
     login_host: '{{ rds_instance.instance.endpoint }}'
     login_user: '{{ rds.username }}'
@@ -16,6 +16,7 @@
     priv: '{{ create_db.mysql.name }}.*:ALL'
     state: present
     host: '%'
+
 #- name: Import db dump
 #  mysql_db:
 #    login_host: '{{ rds_instance.instance.endpoint }}'
