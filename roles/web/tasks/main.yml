@@ -12,7 +12,7 @@
       Name: "{{ env.name }}{{ cluster.name }}web"
     exact_count: 1
     wait: true
-    with_items: "{{ vpc_subnets }}"
+  with_items: "{{ vpc_subnets }}"
   register: ec2_web
 
 - name: Debug ec2_web
