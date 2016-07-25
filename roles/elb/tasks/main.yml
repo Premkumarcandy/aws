@@ -4,40 +4,35 @@
 
 - name: Create LB
   ec2_elb_lb:
-    name: "{{ name }}elb"
+    name: "{{ env.name }}{{ cluster.name }}elb"
     state: present
     zones:
-      - "{{ vpc.subnets[0].az }}"
-      - "{{ vpc.subnets[1].az }}"
+      - "{{ ec_vpc.subnets[0].az }}"
+      - "{{ ec_vpc.subnets[1].az }}"
     cross_az_load_balancing: yes
     listeners:
       - protocol: http
         load_balancer_port: 80
         instance_port: 80
     idle_timeout: 60
-  register: ec2elb
+  register: ec2_elb
 
 - name: Debug ec2elb
   debug:
-    var: ec2elb
+    var: ec2_elb
 
 - name: Create security group
   ec2_group:
-    name: "{{ app_name }}-{{ env }}-{{ service }}"
-    description: "Allow access to {{ app_name }} {{ env }} {{ service }}"
+    name: "{{ env.name }}{{ cluster.name }}elb"
+    description: "Allow access to 80 port on web nodes from ELB"
     rules:
-      - proto: tcp
-        from_port: 22
-        to_port: 22
-        group_name: default
-#        group_id: "{{ vpc.default_security_group_id }}"
       - proto: tcp
         from_port: 80
         to_port: 80
-        group_id: "{{ ec2elb.elb.security_group_ids[0] }}"
+        group_id: "{{ ec2_elb.elb.security_group_ids[0] }}"
       rules_egress:
         - proto: all
           cidr_ip: 0.0.0.0/0
-  register: ec2sg
+  register: ec2_elb_sg
 
-
+# then use ec2_elb_sg for sg on web nodes
