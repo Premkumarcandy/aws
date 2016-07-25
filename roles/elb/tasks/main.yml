@@ -20,24 +20,26 @@
       unhealthy_threshold: 2
       healthy_threshold: 10
     idle_timeout: 60
+    security_group_ids: "{{ http_sg_id }}"
   register: ec2_elb
 
 - name: Debug ec2elb
   debug:
     var: ec2_elb
 
-- name: Create security group
-  ec2_group:
-    name: "{{ env.name }}{{ cluster.name }}elb"
-    description: "Allow access to 80 port on web nodes from ELB"
-    rules:
-      - proto: tcp
-        from_port: 80
-        to_port: 80
-        group_id: "{{ ec2_elb.elb.security_group_ids[0] }}"
-    rules_egress:
-      - proto: all
-        cidr_ip: 0.0.0.0/0
-  register: ec2_elb_sg
+#- name: Create security group
+#  ec2_group:
+#    name: "{{ env.name }}{{ cluster.name }}elb"
+#    description: "Allow access to 80 port on web nodes from ELB"
+#    vpc_id: "{{ ec2_vpc.vpc_id }}"
+#    rules:
+#      - proto: tcp
+#        from_port: 80
+#        to_port: 80
+#        group_id: "{{ ec2_elb.elb.security_group_ids[0] }}"
+#    rules_egress:
+#      - proto: all
+#        cidr_ip: 0.0.0.0/0
+#  register: ec2_elb_sg
 
 # then use ec2_elb_sg for sg on web nodes
