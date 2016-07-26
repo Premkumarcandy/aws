@@ -1,0 +1,48 @@
+#---
+#- name: Create group
+#  group: 
+#    name: "{{ cluster_name }}"
+#    state: present
+
+#- name: Create user
+#  user: 
+#    name: "{{ cluster_name }}"
+#    group: "{{ cluster_name }}"
+#    state: present
+
+- yum: name='php56-fpm' state=present
+- yum: name='php56-mysqlnd' state=present
+- yum: name='php56-mbstring' state=present
+- yum: name='php56-gd' state=present
+- yum: name='php56-pecl-memcache' state=present
+- yum: name='php56-mcrypt' state=present
+- yum: name='php56-opcache' state=present
+- yum: name='php56-pecl-redis' state=present
+
+#- name: Remove php-fpm defaults
+#  file: 
+#    path: '/etc/alternatives/php-fpm.d'
+#    state: absent
+
+#- name: Create php-fpm.d
+#  file: 
+#    path: '/etc/alternatives/php-fpm.d'
+#    state: directory
+#    owner: root 
+#    group: root 
+#    mode: 0755
+
+#- name: Copy texture.conf
+#  template: 
+#    dest: '/etc/php-fpm.d/texture.conf'
+#    src: 'php-fpm.d/texture.conf'
+#    owner: root
+#    group: root 
+#    mode: 0644
+#  notify: 
+#    - restart php-fpm
+
+- service: 
+    name: php-fpm
+    enabled: yes
+

@@ -2,10 +2,13 @@
   hosts: tag_Name_devbrdweb
 #  connection: local
   gather_facts: true
+  vars:
+    cluster_name: broadcast
+    websites:
+      - name: cityline        
   roles:
-#    - common
+    - php
     - nginx
-#    - php
 #    - jump
 #    - rds_subnet_group
 #    - ec_subnet_group
