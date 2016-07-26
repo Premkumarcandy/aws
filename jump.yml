@@ -1,0 +1,8 @@
+- name: Playbook to configure Jump AWS
+  hosts: tag_Name_jump
+#  connection: local
+  gather_facts: true
+  roles:
+    - aws-cli
+#    - docker
+
