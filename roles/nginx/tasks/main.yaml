@@ -17,23 +17,24 @@
     group: root 
     mode: 0755
 
-- block:
-    - name: Copy nginx.conf
-      template: 
-        dest: '/etc/nginx/nginx.conf'
-        src: 'nginx.conf'
-        owner: root 
-        group: root 
-        mode: 0644
-
-    - name: Copy texture.conf
-      template: 
-        dest: "/etc/nginx/conf.d/{{ item.name }}.conf"
-        src: "conf.d/{{ item.name }}.conf"
-        owner: root
-        group: root
-        mode: 0644
-      with_items: "{{ websites }}"
+- name: Copy nginx.conf
+  template: 
+    dest: '/etc/nginx/nginx.conf'
+    src: 'nginx.conf'
+    owner: root 
+    group: root 
+    mode: 0644
+  notify:
+    - reload nginx
+        
+- name: Copy texture.conf
+  template: 
+    dest: "/etc/nginx/conf.d/{{ item.name }}.conf"
+    src: "conf.d/{{ item.name }}.conf"
+    owner: root
+    group: root
+    mode: 0644
+  with_items: "{{ websites }}"
   notify: 
     - reload nginx
 
