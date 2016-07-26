@@ -2,6 +2,7 @@
   hosts: tag_Name_jump
 #  connection: local
   gather_facts: true
+  become: yes
   roles:
     - aws-cli
 #    - docker
