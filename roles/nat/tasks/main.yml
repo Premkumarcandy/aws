@@ -1,13 +1,13 @@
-- name: NETWORK | allocate a new elastic IP without associating it to anything
-  ec2_eip:
-    state: present
-    in_vpc: yes
-    reuse_existing_ip_allowed: yes
-  register: ec2_nat_gw_ip
+#- name: NETWORK | allocate a new elastic IP without associating it to anything
+#  ec2_eip:
+#    state: present
+#    in_vpc: yes
+#    reuse_existing_ip_allowed: yes
+#  register: ec2_nat_gw_ip
 
-- name: Debug ec2_nat_gw_ip
-  debug:
-    var: ec2_nat_gw_ip
+#- name: Debug ec2_nat_gw_ip
+#  debug:
+#    var: ec2_nat_gw_ip
 #  {"allocation_id": "eipalloc-XXX", "changed": true, "public_ip": "X.X.X.X"}
 
 # get status of nat_gateway

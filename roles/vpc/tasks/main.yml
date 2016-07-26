@@ -15,12 +15,22 @@
   debug:
     var: ec2_vpc
 
-- name: set fact vpc_subnets
+- name: set fact public_vpc_subnets
   set_fact:
-    vpc_subnets:
+    public_vpc_subnets:
       - "{{ ec2_vpc.subnets[0].id }}"
       - "{{ ec2_vpc.subnets[1].id }}"
 
-- name: debug vpc_subnets
+- name: debug public_vpc_subnets
   debug:
-    var: vpc_subnets
+    var: public_vpc_subnets
+
+- name: set fact private_vpc_subnets
+  set_fact:
+    private_vpc_subnets:
+      - "{{ ec2_vpc.subnets[3].id }}"
+      - "{{ ec2_vpc.subnets[4].id }}"
+      
+- name: debug private_vpc_subnets
+  debug:
+    var: private_vpc_subnets
