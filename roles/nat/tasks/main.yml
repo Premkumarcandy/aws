@@ -14,8 +14,9 @@
 # register: nat_gateway
 
 #- name: NETWORK | Create NAT instance for subnet 1
-#  command: "aws ec2 create-nat-gateway 
-#--region {{aws_region}} 
-#  --subnet-id {{aws_vpc_pubsubnet1_runtime}} 
-#  --allocation-id {{aws_vpc_privsubnet1_allocation}}"
-# when: nat_gateway not_found       
+#  command: >
+#    aws ec2 create-nat-gateway
+#    --region "{{ vpc.region }}"
+#    --subnet-id "{{ vpc_subnets[0 ]}}" 
+#    --allocation-id {{aws_vpc_privsubnet1_allocation}}"
+## when: nat_gateway not_found       

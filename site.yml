@@ -5,11 +5,12 @@
 #  vars_files:
 #    - vars/devbrd.yml
   roles:
-    # may run outside
+    # network
     - vpc
     - nat
     - security_group
-    - ec2_keys    
+    #
+#    - ec2_keys    
 #    - jump
 #    - rds_subnet_group
 #    - ec_subnet_group
