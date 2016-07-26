@@ -1,0 +1,7 @@
+- name: Install awscli and awsebcli
+  pip:
+    name: "{{ item }}"
+  with_items:
+    - awscli
+    - awsebcli
+    

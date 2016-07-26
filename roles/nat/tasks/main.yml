@@ -3,4 +3,19 @@
     state: present
     in_vpc: yes
     reuse_existing_ip_allowed: yes
-    
+  register: ec2_nat_gw_ip
+
+- name: Debug ec2_nat_gw_ip
+  debug:
+    var: ec2_nat_gw_ip
+#  {"allocation_id": "eipalloc-XXX", "changed": true, "public_ip": "X.X.X.X"}
+
+# get status of nat_gateway
+# register: nat_gateway
+
+#- name: NETWORK | Create NAT instance for subnet 1
+#  command: "aws ec2 create-nat-gateway 
+#--region {{aws_region}} 
+#  --subnet-id {{aws_vpc_pubsubnet1_runtime}} 
+#  --allocation-id {{aws_vpc_privsubnet1_allocation}}"
+# when: nat_gateway not_found       
