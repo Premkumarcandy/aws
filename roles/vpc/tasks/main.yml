@@ -28,8 +28,8 @@
 - name: set fact private_vpc_subnets
   set_fact:
     private_vpc_subnets:
+      - "{{ ec2_vpc.subnets[2].id }}"
       - "{{ ec2_vpc.subnets[3].id }}"
-      - "{{ ec2_vpc.subnets[4].id }}"
       
 - name: debug private_vpc_subnets
   debug:
