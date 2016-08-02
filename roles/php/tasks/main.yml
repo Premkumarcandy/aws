@@ -14,27 +14,44 @@
     state: present
   with_items:
     - php56-fpm
-    #
+    - php56-soap
     - php56-mysqlnd
     - php56-pdo
-    #
+
+- name: Install php packages v2
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
     - php56-mbstring
     - php56-opcache
-    #
-    - php56-soap
-    #
+
+- name: Install php packages v3
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
     - php56-pecl-redis
     - php-pear
     - php56-pecl-igbinary
-    #
+
+- name: Install php packages v4
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
     - php56-gd
     - libXpm
     - t1lib
-    #
+
+- name: Install php packages v5
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
     - php56-mcrypt
     - libmcrypt
     - libtool-ltdl
-    #
 
     
 #- yum: name='php56-fpm' state=present
