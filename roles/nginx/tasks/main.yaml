@@ -4,18 +4,14 @@
     name: 'http://nginx.org/packages/centos/6/x86_64/RPMS/nginx-1.10.1-1.el6.ngx.x86_64.rpm'
     state: present
 
-#- name: Remove nginx defaults
-#  file: 
-#    path: '/etc/nginx/conf.d'
-#    state: absent
-
-#- name: Create nginx conf.d
-#  file: 
-#    path: '/etc/nginx/conf.d'
-#    state: directory
-#    owner: root 
-#    group: root 
-#    mode: 0755
+- name: Remove nginx defaults
+  file: 
+    path: "/etc/nginx/conf.d/{{ item }}"
+    state: absent
+  with_items:
+    - default.conf
+    - php-fpm.conf
+    - php-fpm.conf-5.6
 
 #- name: Copy nginx.conf
 #  template: 
@@ -27,18 +23,18 @@
 #  notify:
 #    - reload nginx
         
-#- name: Copy configs
-#  template: 
-#    dest: "/etc/nginx/conf.d/{{ item.name }}.conf"
-#    src: "conf.d/{{ item.name }}.conf"
-#    owner: root
-#    group: root
-#    mode: 0644
-#  with_items: "{{ websites }}"
-#  notify: 
-#    - reload nginx
+- name: Copy nginx configs
+  template: 
+    dest: "/etc/nginx/conf.d/{{ item.name }}.conf"
+    src: "conf.d/{{ item.name }}.conf"
+    owner: root
+    group: root
+    mode: 0644
+  with_items: "{{ websites }}"
+  notify: 
+    - reload nginx
 
-#- service: 
-#    name: nginx
-#    state: started
-#    enabled: yes
+- service: 
+    name: nginx
+    state: started
+    enabled: yes
