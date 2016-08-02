@@ -5,6 +5,10 @@
     vpc_id: "{{ ec2_vpc.vpc_id }}"
     rules:
       - proto: tcp
+        from_port: 22
+        to_port: 22
+        cidr_ip: "{{ ec2_vpc.vpc.cidr_block }}"
+      - proto: tcp
         from_port: 80
         to_port: 80
         cidr_ip: "{{ ec2_vpc.vpc.cidr_block }}"
