@@ -9,5 +9,5 @@
 #      - name: citytv
   roles:
     - php
-    - nginx
+#    - nginx
 

@@ -1,24 +1,52 @@
-#---
 #- name: Create group
 #  group: 
 #    name: "{{ cluster_name }}"
 #    state: present
-
 #- name: Create user
 #  user: 
 #    name: "{{ cluster_name }}"
 #    group: "{{ cluster_name }}"
 #    state: present
 
-- yum: name='php56-fpm' state=present
-- yum: name='php56-mysqlnd' state=present
-- yum: name='php56-mbstring' state=present
-- yum: name='php56-gd' state=present
-- yum: name='php56-pecl-memcache' state=present
-- yum: name='php56-mcrypt' state=present
-- yum: name='php56-opcache' state=present
-- yum: name='php56-pecl-redis' state=present
+- name: Install php packages
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - php56-fpm
+    - php56-mysqlnd
+    - php56-mbstring
+    - php56-gd
+    - php56-pecl-memcache
+    - php56-mcrypt
+    - php56-opcache
+    - php56-pecl-redis
 
+#- yum: name='php56-fpm' state=present
+#- yum: name='php56-mysqlnd' state=present
+#- yum: name='php56-mbstring' state=present
+#- yum: name='php56-gd' state=present
+#- yum: name='php56-pecl-memcache' state=present
+#- yum: name='php56-mcrypt' state=present
+#- yum: name='php56-opcache' state=present
+#- yum: name='php56-pecl-redis' state=present
+
+# "php","php-mysqlnd","php-xml","php-mbstring","php-gd","php-pecl-memcache","php-mcrypt","php-opcache","php-pecl-redis","php-soap"  
+#  RUN apt-get update && apt-get install -y \
+#      libpng12-dev libjpeg-dev libmcrypt4 libmcrypt-dev libxml2-dev
+
+#      RUN apt-get install -y libphp-predis \
+#          && pecl install redis-2.2.8 \
+#              && docker-php-ext-enable redis
+#  opcache \
+#  gd \
+#  mysqli mysql pdo_mysql\
+#  pdo \
+#  mbstring \
+#  mcrypt \
+#  zip \
+#  xml
+  
 #- name: Remove php-fpm defaults
 #  file: 
 #    path: '/etc/alternatives/php-fpm.d'
@@ -42,7 +70,7 @@
 #  notify: 
 #    - restart php-fpm
 
-- service: 
-    name: php-fpm
-    enabled: yes
+#- service: 
+#    name: php-fpm
+#    enabled: yes
 

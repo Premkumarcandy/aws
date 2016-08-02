@@ -1,4 +1,4 @@
-- name: Playbook to create AWS Environment
+- name: Playbook to create AWS Environment - VPC, RDS, EC, ELB, EC2
   hosts: localhost
   connection: local
   gather_facts: false
