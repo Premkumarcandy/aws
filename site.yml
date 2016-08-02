@@ -13,9 +13,9 @@
 #    - ec_subnet_group
     - redis
     - rds
-    - elb
+#    - elb
     # should run inside VPC
-    - web
+#    - web
 #    - create_db
     # - deploy_without_docker
     # echo 'flushall' | nc

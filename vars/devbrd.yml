@@ -39,10 +39,10 @@ security_group:
     port: 443
     proto: tcp
     cidr_ip: "{{ vpc.cidr_block }}"
-  - name: mysql
-    port: 3306
-    proto: tcp
-    cidr_ip: "{{ vpc.cidr_block }}"
+#  - name: mysql
+#    port: 3306
+#    proto: tcp
+#    cidr_ip: "{{ vpc.cidr_block }}"
 #  - name: redis
 #    port: 6379
 #    proto: tcp
