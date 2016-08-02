@@ -53,56 +53,33 @@
     - libmcrypt
     - libtool-ltdl
 
-    
-#- yum: name='php56-fpm' state=present
-#- yum: name='php56-mysqlnd' state=present
-#- yum: name='php56-mbstring' state=present
-#- yum: name='php56-gd' state=present
-#- yum: name='php56-pecl-memcache' state=present
-#- yum: name='php56-mcrypt' state=present
-#- yum: name='php56-opcache' state=present
-#- yum: name='php56-pecl-redis' state=present
-
-# "php","php-mysqlnd","php-xml","php-mbstring","php-gd","php-pecl-memcache","php-mcrypt","php-opcache","php-pecl-redis","php-soap"  
-#  RUN apt-get update && apt-get install -y \
-#      libpng12-dev libjpeg-dev libmcrypt4 libmcrypt-dev libxml2-dev
-
-#      RUN apt-get install -y libphp-predis \
-#          && pecl install redis-2.2.8 \
-#              && docker-php-ext-enable redis
-#  opcache \
-#  gd \
-#  mysqli mysql pdo_mysql\
-#  pdo \
-#  mbstring \
-#  mcrypt \
-#  zip \
-#  xml
-  
-#- name: Remove php-fpm defaults
-#  file: 
-#    path: '/etc/alternatives/php-fpm.d'
-#    state: absent
-
-#- name: Create php-fpm.d
-#  file: 
-#    path: '/etc/alternatives/php-fpm.d'
-#    state: directory
-#    owner: root 
-#    group: root 
-#    mode: 0755
-
-#- name: Copy texture.conf
-#  template: 
-#    dest: '/etc/php-fpm.d/texture.conf'
-#    src: 'php-fpm.d/texture.conf'
+#- name: Copy php-fpm-5.6.conf
+#  template:
+#    dest: /etc/php-fpm-5.6.conf
+#    src: php-fpm-5.6.conf
 #    owner: root
-#    group: root 
+#    group: root
 #    mode: 0644
-#  notify: 
+#  notify:
 #    - restart php-fpm
 
-#- service: 
-#    name: php-fpm
-#    enabled: yes
+- name: Remove php-fpm defaults
+  file: 
+    path: "/etc/alternatives/php-fpm.d/www.conf"
+    state: absent
 
+- name: Copy php-fpm config 
+  template: 
+    dest: "/etc/alternatives/php-fpm.d/{{ item.name }}.conf"
+    src: "php-fpm.d/{{ item.name }}.conf"
+    owner: root
+    group: root 
+    mode: 0644
+  with_items: "{{ websites }}"
+  notify: 
+    - restart php-fpm
+
+- service: 
+    name: php-fpm-5.6
+    enabled: yes
+    state: started

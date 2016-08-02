@@ -3,11 +3,12 @@
   gather_facts: true
   become: yes
   vars:
-    cluster_name: broadcast
+#    cluster_name: broadcast
     websites:
       - name: cityline
 #      - name: citytv
   roles:
+#    - create_users
     - php
 #    - nginx
 
