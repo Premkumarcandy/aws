@@ -43,14 +43,15 @@ security_group:
     port: 3306
     proto: tcp
     cidr_ip: "{{ vpc.cidr_block }}"
-  - name: redis
-    port: 6379
-    proto: tcp
-    cidr_ip: "{{ vpc.cidr_block }}"
+#  - name: redis
+#    port: 6379
+#    proto: tcp
+#    cidr_ip: "{{ vpc.cidr_block }}"
 redis:
   state: present
   node_type: cache.t2.micro
   num_nodes: 1
+  cache_engine_version: '2.8.24'
 rds:
   state: present
   db_engine: MySQL

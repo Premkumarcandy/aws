@@ -6,7 +6,7 @@
     cluster_name: broadcast
     websites:
       - name: cityline
-      - name: citytv
+#      - name: citytv
   roles:
     - php
     - nginx

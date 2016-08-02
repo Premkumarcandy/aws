@@ -1,5 +1,3 @@
-# Full creation example with subnets and optional availability zones.
-# The absence or presence of subnets deletes or creates them respectively.
 - name: Creating VPC
   ec2_vpc:
     state: "{{ vpc.state }}"

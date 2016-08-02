@@ -27,7 +27,7 @@
   notify:
     - reload nginx
         
-- name: Copy texture.conf
+- name: Copy configs
   template: 
     dest: "/etc/nginx/conf.d/{{ item.name }}.conf"
     src: "conf.d/{{ item.name }}.conf"
