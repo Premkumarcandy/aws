@@ -10,5 +10,5 @@
   roles:
 #    - create_users
     - php
-#    - nginx
+    - nginx
 
