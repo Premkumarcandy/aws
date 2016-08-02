@@ -31,9 +31,9 @@
     - libXpm
     - t1lib
     #
-#    - php56-mcrypt
-#    - libmcrypt
-#    - libtool-ltdl
+    - php56-mcrypt
+    - libmcrypt
+    - libtool-ltdl
     #
 
     
