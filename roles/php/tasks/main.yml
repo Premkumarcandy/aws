@@ -74,7 +74,7 @@
 - name: Copy php-fpm config 
   template: 
     dest: "/etc/alternatives/php-fpm.d/{{ item.name }}.conf"
-    src: "php-fpm.d/{{ item.name }}.conf"
+    src: "php-fpm.d/template.conf"
     owner: root
     group: root 
     mode: 0644
