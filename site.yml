@@ -6,16 +6,13 @@
 #    - vars/devbrd.yml
   roles:
     - vpc
-    - security_group
+#    - security_group
     - ec2_keys    
 #    - jump
     - redis
     - rds
     - elb
-    # should run inside VPC
-#    - web
+    - web
 #    - create_db
-    # - deploy_without_docker
-    # echo 'flushall' | nc
-    # devbrdred.x7pqnp.0001.usw2.cache.amazonaws.com 6379
+# echo 'flushall' | nc devbrdred.x7pqnp.0001.usw2.cache.amazonaws.com 6379
 
