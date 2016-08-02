@@ -32,9 +32,9 @@
     #
     - php56-soap
     #
-#    - php56-pecl-redis
-#    - php-pear
-#    - php56-pecl-igbinary
+    - php56-pecl-redis
+    - php-pear
+    - php56-pecl-igbinary
 
 #- yum: name='php56-fpm' state=present
 #- yum: name='php56-mysqlnd' state=present
