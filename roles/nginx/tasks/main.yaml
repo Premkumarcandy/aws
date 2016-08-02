@@ -1,9 +1,4 @@
 ---
-- name: Create /var/www/html
-  file:
-    path: /var/www/html
-    state: directory
-    
 - name: yum install nginx
   yum: 
     name: 'http://nginx.org/packages/centos/6/x86_64/RPMS/nginx-1.10.1-1.el6.ngx.x86_64.rpm'
@@ -27,7 +22,13 @@
 #    mode: 0644
 #  notify:
 #    - reload nginx
-        
+
+- name: Create /var/www/html
+  file:
+    path: "/var/www/html/{{ item.root }}"
+    state: directory
+  with_items: "{{ websites }}"
+    
 - name: Copy nginx configs
   template: 
     dest: "/etc/nginx/conf.d/{{ item.name }}.conf"
