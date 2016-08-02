@@ -3,8 +3,8 @@
     state: present
     name: "{{ env.name }}{{ cluster.name }}"
     description: "{{ name }} Subnet Group"
+    # FIX: check subnets: private or public
     subnets:
-      # FIX: check subnets: private or public
       - "{{ ec2_vpc.subnets[0].id }}"
       - "{{ ec2_vpc.subnets[1].id }}"
   register: rds_subnet_group
@@ -26,7 +26,7 @@
     rules_egress:
       - proto: all
         cidr_ip: 0.0.0.0/0
-        register: ec2_sg_rds
+  register: ec2_sg_rds
       
 - name: Debug Security Group for RDS
   debug:
