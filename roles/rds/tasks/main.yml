@@ -39,8 +39,9 @@
     db_engine: "{{ rds.db_engine }}"
     size: "{{ rds.size }}"
     instance_type: "{{ rds.instance_type }}"
+    # FIX: use username and password from vault
     username: "{{ rds.username }}"
-    password: SuperStrongPassword
+    password: "{{ rds.password }}"
     # rds_subnet_group
     # fix: get it from rds_subnet_group var
     subnet: "{{ env.name }}{{ cluster.name }}"

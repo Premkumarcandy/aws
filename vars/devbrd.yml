@@ -31,27 +31,16 @@ security_group:
     port: 22
     proto: tcp
     cidr_ip: "{{ vpc.cidr_block }}"
-  - name: http
-    port: 80
-    proto: tcp
-    cidr_ip: "{{ vpc.cidr_block }}"
-  - name: https
-    port: 443
-    proto: tcp
-    cidr_ip: "{{ vpc.cidr_block }}"
-#  - name: mysql
-#    port: 3306
-#    proto: tcp
-#    cidr_ip: "{{ vpc.cidr_block }}"
-#  - name: redis
-#    port: 6379
-#    proto: tcp
-#    cidr_ip: "{{ vpc.cidr_block }}"
 redis:
   state: present
   node_type: cache.t2.micro
   num_nodes: 1
   cache_engine_version: '2.8.24'
+elb:
+  state: present
+  name: "{{ env.name }}{{ cluster.name }}elb"
+  scheme: 'internet-facing'
+  cross_az_load_balancing: yes
 rds:
   state: present
   db_engine: MySQL
@@ -72,12 +61,6 @@ ec2_keys:
 #  instance_type: 't2.nano'
 #  source_ami: 'ami-7172b611'
 #
-elb:
-  state: present
-  name: "{{ env.name }}{{ cluster.name }}elb"
-  scheme: 'internet-facing'
-  cross_az_load_balancing: yes
-  #
 web:
   image: 'ami-7172b611'
   instance_type: 't2.nano'
