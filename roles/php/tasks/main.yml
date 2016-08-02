@@ -14,13 +14,27 @@
     state: present
   with_items:
     - php56-fpm
+    #
     - php56-mysqlnd
+    - php56-pdo
+    #
     - php56-mbstring
+    #
     - php56-gd
-    - php56-pecl-memcache
+    - libXpm
+    - t1lib
+    #
     - php56-mcrypt
+    - libmcrypt
+    - libtool-ltdl
+    #
     - php56-opcache
+    #
+    - php56-soap
+    #
     - php56-pecl-redis
+    - php-pear
+    - php56-pecl-igbinary
 
 #- yum: name='php56-fpm' state=present
 #- yum: name='php56-mysqlnd' state=present
