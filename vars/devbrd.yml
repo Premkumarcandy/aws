@@ -2,6 +2,7 @@ cluster:
   name: brd
 env:
   name: dev
+# DO NOT CHANGE NAME!!!  
 name: "{{ env.name }}{{ cluster.name }}"
 #
 vpc:
