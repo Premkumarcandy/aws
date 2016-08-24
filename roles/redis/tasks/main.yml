@@ -1,5 +1,5 @@
 - name: Gather facts about any VPC with a tag
-0;95;0c  ec2_vpc_net_facts:
+  ec2_vpc_net_facts:
     filters:
       "tag:Name": "{{ name }}vpc"
   register: ec2_vpc_result
