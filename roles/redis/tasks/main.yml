@@ -2,11 +2,11 @@
   ec2_vpc_net_facts:
     filters:
       "tag:Name": "{{ name }}vpc"
-  register: vpc
+  register: ec2_vpc_result
 
 - name: Debug vpc_id
   debug:
-    var: vpc
+    var: ec2_vpc_result
 
 
 # - name: Creating elasticache_subnet_group
