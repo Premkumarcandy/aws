@@ -1,0 +1,16 @@
+- name: Playbook to create AWS Environment
+  hosts: localhost
+  connection: local
+  gather_facts: false
+#  vars_files:
+#    - vars/devbrd.yml
+  roles:
+    - vpc
+#    - security_group
+#    - ec2_keys    
+#    - jump
+#    - redis
+#    - rds
+#    - elb
+#    - web
+#    - create_db

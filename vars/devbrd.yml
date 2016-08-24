@@ -2,6 +2,8 @@ cluster:
   name: brd
 env:
   name: dev
+name: "{{ env.name }}{{ cluster.name }}"
+#
 vpc:
   state: present
   region: us-west-2
@@ -9,16 +11,16 @@ vpc:
   subnets:
     - cidr: 10.200.1.0/24
       az: us-west-2c
-      resource_tags: { "Name": "{{ env.name }}{{ cluster.name }}" }
+      resource_tags: { "Name": "{{ name }}" }
     - cidr: 10.200.2.0/24
       az: us-west-2b
-      resource_tags: { "Name": "{{ env.name }}{{ cluster.name }}" }
+      resource_tags: { "Name": "{{ name }}" }
     - cidr: 10.200.3.0/24
       az: us-west-2c
-      resource_tags: { "Name": "{{ env.name }}{{ cluster.name }}priv" }
+      resource_tags: { "Name": "{{ name }}priv" }
     - cidr: 10.200.4.0/24
       az: us-west-2b
-      resource_tags: { "Name": "{{ env.name }}{{ cluster.name }}priv" }
+      resource_tags: { "Name": "{{ name }}priv" }
   route_tables:
     - subnets:
         - 10.200.1.0/24
@@ -26,11 +28,7 @@ vpc:
       routes:
         - dest: 0.0.0.0/0
           gw: igw
-#security_group:
-#  - name: ssh
-#    port: 22
-#    proto: tcp
-#    cidr_ip: "{{ vpc.cidr_block }}"
+#
 redis:
   state: present
   node_type: cache.t2.micro
@@ -38,7 +36,7 @@ redis:
   cache_engine_version: '2.8.24'
 elb:
   state: present
-  name: "{{ env.name }}{{ cluster.name }}elb"
+  name: "{{ name }}elb"
   scheme: 'internet-facing'
   cross_az_load_balancing: yes
 rds:
@@ -61,20 +59,9 @@ web:
   instance_type: 't2.nano'
   key_name: "{{ ec2_keys[0].name }}"
 #
-name: "{{ env.name }}{{ cluster.name }}"
 jump:
   state: present
   key_name: "{{ create_ec2_key.name }}"
   instance_type: 't2.nano'
   source_ami: 'ami-7172b611'
-#
-flocker:
-  security_group:
-    - name: flocker4523
-      port: 4523
-      proto: tcp
-      cidr_ip: "{{ vpc.cidr_block }}"
-    - name: flocker4524
-      port: 4524
-      proto: tcp
-      cidr_ip: "{{ vpc.cidr_block }}"
+
