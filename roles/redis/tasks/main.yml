@@ -1,5 +1,5 @@
 - name: Gather facts about any VPC with a tag
-  ec2_vpc_net_facts:
+0;95;0c  ec2_vpc_net_facts:
     filters:
       "tag:Name": "{{ name }}vpc"
   register: ec2_vpc
@@ -13,27 +13,25 @@
     filters:
 #      vpc-id: vpc-abcdef00
       "tag:Name": "{{ name }}priv"
-  register: ec2_private_subnet
+  register: ec2_subnet
 
-- name: Debug priv subnet
+- name: Set facts private subnets
+  set_fact:
+    private_subnets:
+      - ec2_subnet.subnets[0].id
+      - ec2_subnet.subnets[1].id
+    
+- name: Creating elasticache_subnet_group
+  elasticache_subnet_group:
+    state: present
+    name: "{{ name }}"
+    description: "{{ name }} Subnet Group"
+    subnets: "{{ private_subnets }}"
+  register: elasticache_subnet_group
+
+- name: Debug elasticache_subnet_group
   debug:
-    var: ec2_private_subnet
-      
-# - name: Creating elasticache_subnet_group
-#   elasticache_subnet_group:
-#     state: present
-#     name: "{{ name }}"
-#     description: "{{ name }} Subnet Group"
-#     # FIX: how get private subnets for {{ name }}
-#     subnets:
-#       - "{{ ec2_vpc.subnets[0].id }}"
-#       - "{{ ec2_vpc.subnets[1].id }}"
-#     #
-#   register: elasticache_subnet_group
-#
-# - name: Debug elasticache_subnet_group
-#   debug:
-#     var: elasticache_subnet_group
+    var: elasticache_subnet_group
 #
 # - name: Creating Security Group for Redis
 #   ec2_group:
