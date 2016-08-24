@@ -4,11 +4,21 @@
       "tag:Name": "{{ name }}vpc"
   register: ec2_vpc
 
-- name: Debug vpc_id
+- name: Set fact ec2_vpc_id
+  set_fact:
+    "ec2_vpc_id": ec2_vpc.vpcs[0].id
+
+- name: Get private subnets
+  ec2_vpc_subnet_facts:
+    filters:
+#      vpc-id: vpc-abcdef00
+      "tag:Name": "{{ name }}priv"
+  register: ec2_private_subnet
+
+- name: Debug priv subnet
   debug:
-    var: ec2_vpc.vpcs[0].id
-
-
+    var: ec2_private_subnet
+      
 # - name: Creating elasticache_subnet_group
 #   elasticache_subnet_group:
 #     state: present
