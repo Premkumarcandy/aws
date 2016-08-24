@@ -1,13 +1,17 @@
 - name: Gather facts about any VPC with a tag
-  ec2_vpc_net_facts:
+0;95;0c  ec2_vpc_net_facts:
     filters:
       "tag:Name": "{{ name }}vpc"
-  register: ec2_vpc
+  register: ec2_vpc_result
 
 - name: Set fact ec2_vpc_id
   set_fact:
-    "ec2_vpc": ec2_vpc.vpcs[0]
+    "ec2_vpc": ec2_vpc_result.vpcs[0]
 
+- name: Debug ec2_vpc
+  debug:
+    var: ec2_vpc
+    
 - name: Get private subnets
   ec2_vpc_subnet_facts:
     filters:
