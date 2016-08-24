@@ -18,8 +18,8 @@
 - name: Set facts private subnets
   set_fact:
     private_subnets:
-      - ec2_subnet.subnets[0].id
-      - ec2_subnet.subnets[1].id
+      - "{{ ec2_subnet.subnets[0].id }}"
+      - "{{ ec2_subnet.subnets[1].id }}"
     
 - name: Creating elasticache_subnet_group
   elasticache_subnet_group:
