@@ -6,7 +6,7 @@
 
 - name: Set fact ec2_vpc_id
   set_fact:
-    "ec2_vpc": ec2_vpc_result.vpcs[0]
+    "ec2_vpc": "{{ ec2_vpc_result.vpcs[0] }}"
 
 - name: Debug ec2_vpc
   debug:
