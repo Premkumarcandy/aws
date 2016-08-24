@@ -5,7 +5,12 @@
 - name: Debug vpc_id
   debug:
     var: vpc_id.stdout
-  
+
+- name: Gather facts about any VPC with a tag
+  ec2_vpc_net_facts:
+    filters:
+      "tag:Name": "{{ name }}"
+
 # - name: Creating elasticache_subnet_group
 #   elasticache_subnet_group:
 #     state: present
