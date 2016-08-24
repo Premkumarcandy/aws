@@ -1,56 +1,61 @@
-- name: Creating elasticache_subnet_group
-  elasticache_subnet_group:
-    state: present
-    name: "{{ env.name }}{{ cluster.name }}"
-    description: "{{ name }} Subnet Group"
-    # FIX: check subnets: private or public
-    subnets:
-      - "{{ ec2_vpc.subnets[0].id }}"
-      - "{{ ec2_vpc.subnets[1].id }}"
-  register: elasticache_subnet_group
-  
-- name: Debug elasticache_subnet_group
-  debug:
-    var: elasticache_subnet_group
+- name: Get VPC id
+  command: aws ec2 describe-vpcs --filter Name=tag:Name,Values="{{ name }}vpc" --output json --query 'Vpcs[0].VpcId'
+  register: vpc_id
 
-- name: Creating Security Group for Redis
-  ec2_group:
-    name: "{{ env.name }}{{ cluster.name }}red"
-    description: "{{ env.name }}{{ cluster.name }}red"
-    vpc_id: "{{ ec2_vpc.vpc_id }}"
-    rules:
-      - proto: tcp
-        from_port: 6379
-        to_port: 6379
-        cidr_ip: "{{ ec2_vpc.vpc.cidr_block }}"
-    rules_egress:
-      - proto: all
-        cidr_ip: 0.0.0.0/0
-  register: ec2_sg_redis
-            
-- name: Debug Security Group for Redis
-  debug:
-    var: ec2_sg_redis
-    
-- name: Creating elasticache Redis server
-  elasticache:
-    name: "{{ env.name }}{{ cluster.name }}red"
-    state: "{{ redis.state }}"
-    engine: redis
-    node_type: "{{ redis.node_type }}"
-    num_nodes: "{{ redis.num_nodes }}"
-    cache_port: 6379
-    cache_engine_version: "{{ redis.cache_engine_version }}"
-    # FIX use elasticache_subnet_group var
-    cache_subnet_group: "{{ env.name }}{{ cluster.name }}"
-    security_group_ids:
-      - "{{ ec2_sg_redis.group_id }}"
-  register: redis
-
-- name: Debug redis
-  debug:
-    var: redis
-
-- name: Debug redis endpoint
-  debug:
-    var: redis.elasticache.data.CacheNodes[0].Endpoint.Address
+# - name: Creating elasticache_subnet_group
+#   elasticache_subnet_group:
+#     state: present
+#     name: "{{ name }}"
+#     description: "{{ name }} Subnet Group"
+#     # FIX: how get private subnets for {{ name }}
+#     subnets:
+#       - "{{ ec2_vpc.subnets[0].id }}"
+#       - "{{ ec2_vpc.subnets[1].id }}"
+#     #
+#   register: elasticache_subnet_group
+#
+# - name: Debug elasticache_subnet_group
+#   debug:
+#     var: elasticache_subnet_group
+#
+# - name: Creating Security Group for Redis
+#   ec2_group:
+#     name: "{{ env.name }}{{ cluster.name }}red"
+#     description: "{{ env.name }}{{ cluster.name }}red"
+#     vpc_id: "{{ ec2_vpc.vpc_id }}"
+#     rules:
+#       - proto: tcp
+#         from_port: 6379
+#         to_port: 6379
+#         cidr_ip: "{{ ec2_vpc.vpc.cidr_block }}"
+#     rules_egress:
+#       - proto: all
+#         cidr_ip: 0.0.0.0/0
+#   register: ec2_sg_redis
+#
+# - name: Debug Security Group for Redis
+#   debug:
+#     var: ec2_sg_redis
+#
+# - name: Creating elasticache Redis server
+#   elasticache:
+#     name: "{{ env.name }}{{ cluster.name }}red"
+#     state: "{{ redis.state }}"
+#     engine: redis
+#     node_type: "{{ redis.node_type }}"
+#     num_nodes: "{{ redis.num_nodes }}"
+#     cache_port: 6379
+#     cache_engine_version: "{{ redis.cache_engine_version }}"
+#     # FIX use elasticache_subnet_group var
+#     cache_subnet_group: "{{ env.name }}{{ cluster.name }}"
+#     security_group_ids:
+#       - "{{ ec2_sg_redis.group_id }}"
+#   register: redis
+#
+# - name: Debug redis
+#   debug:
+#     var: redis
+#
+# - name: Debug redis endpoint
+#   debug:
+#     var: redis.elasticache.data.CacheNodes[0].Endpoint.Address

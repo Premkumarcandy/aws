@@ -34,11 +34,6 @@ redis:
   node_type: cache.t2.micro
   num_nodes: 1
   cache_engine_version: '2.8.24'
-elb:
-  state: present
-  name: "{{ name }}elb"
-  scheme: 'internet-facing'
-  cross_az_load_balancing: yes
 rds:
   state: present
   db_engine: MySQL
@@ -46,6 +41,11 @@ rds:
   instance_type: 'db.t2.micro'
   username: mysqlroot
   password: SuperStrongPassword
+elb:
+  state: present
+  name: "{{ name }}elb"
+  scheme: 'internet-facing'
+  cross_az_load_balancing: yes
 create_db:
   mysql:
     user: mysqluser
