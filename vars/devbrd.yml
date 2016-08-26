@@ -40,17 +40,13 @@ rds:
   db_engine: MySQL
   size: 10
   instance_type: 'db.t2.micro'
-  username: mysqlroot
-  password: SuperStrongPassword
+  mysqlroot: mysqlroot
+  mysqlroot_password: SuperStrongPassword
 elb:
   state: present
   name: "{{ name }}elb"
   scheme: 'internet-facing'
   cross_az_load_balancing: yes
-create_db:
-  mysql:
-    user: mysqluser
-    password: mysqlpassword
 ec2_keys:
   - name: 'knife-west2'
     key_material: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5XHa3KEFt14QCGL6zCir8AimIwQbo/4SG0gsFnEtWrIq83nMKGXmGPt0PzPrWEyvVg1d3DwA/nH/cZq9OXCA8gpCgZEvZirbZ+VgjlFgIyMynLpYz/7CkXY3eutiwZ/sqi7H7f3DOmvRnPUszTKUx8QOCb2lL7/o7ZTGOmTnplRy2XtkcgNhqhZmWnY62XgHryFZ8L4ZkJX/km+EjeT5dBs46wpvSK3DoZSFYYhdMeXhKWUzM9lliSQJ+8EQ4/w1k+PhLwN3FdfKplDvzHKpeNfSPaVIfKfUHJl/RhvAMTEIkQmaFMI3ViYmBupJ/8GbWoBEIC3Aksk6VMRjPif57 rz@MRMIOMP1444'

@@ -33,8 +33,8 @@
     size: "{{ rds.size }}"
     instance_type: "{{ rds.instance_type }}"
     # FIX: use username and password from vault
-    username: "{{ rds.username }}"
-    password: "{{ rds.password }}"
+    username: "{{ rds.mysqlroot }}"
+    password: "{{ rds.mysqlroot_password }}"
     subnet: "{{ name }}rsg"
     vpc_security_groups: "{{ ec2_sg_rds.group_id }}"
     tags:
