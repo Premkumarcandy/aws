@@ -3,7 +3,7 @@
   rds:
     command: facts
     instance_name: "{{ name }}dbm01"
-    register: rds_facts
+  register: rds_facts
 
 - name: Debug rds_facts
   debug:
