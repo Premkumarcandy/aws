@@ -8,5 +8,6 @@ ansible-playbook rds.yml -e '@vars/devbrd.yml'
 ansible-playbook elb.yml -e '@vars/devbrd.yml'
 ansible-playbook ec2_keys.yml -e '@vars/devbrd.yml'
 ansible-playbook web.yml -e '@vars/devbrd.yml'
+# 
+ansible-playbook -v db.yml -e '@vars/devbrd.yml' -e '@vars/cityline.yml'
 
-#    - create_db

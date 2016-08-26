@@ -52,3 +52,4 @@
 #    state: started
 #  with_items: "{{ jump.tagged_instances }}"
 
+#yum install MySQL-python27.x86_64
