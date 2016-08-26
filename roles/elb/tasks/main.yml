@@ -1,8 +1,12 @@
+# Dependencies:
+# name - defined in vars
+# vpc_id, public_subnets - from role get_facts
+
 - name: Creating Security Group for ELB
   ec2_group:
-    name: "{{ env.name }}{{ cluster.name }}elb"
-    description: "{{ env.name }}{{ cluster.name }}elb"
-    vpc_id: "{{ ec2_vpc.vpc_id }}"
+    name: "{{ name }}elb"
+    description: "{{ name }}elb"
+    vpc_id: "{{ vpc_id }}"
     rules:
       - proto: tcp
         from_port: 80
@@ -17,20 +21,13 @@
         cidr_ip: 0.0.0.0/0
   register: ec2_sg_elb
 
-- name: Debug Security Group ELB
-  debug:
-    var: ec2_sg_elb
-    
 - name: Create ELB
   ec2_elb_lb:
     name: "{{ elb.name }}"
     state: "{{ elb.state }}"
     scheme: "{{ elb.scheme }}"
-    # FIX: check subnets: private or public
-    subnets:
-      - "{{ ec2_vpc.subnets[0].id }}"
-      - "{{ ec2_vpc.subnets[1].id }}"
-    cross_az_load_balancing: "{{ elb.cross_az_load_balancing }}"
+    subnets: "{{ public_subnets }}"
+     cross_az_load_balancing: "{{ elb.cross_az_load_balancing }}"
     listeners:
       - protocol: http
         load_balancer_port: 80
@@ -38,7 +35,7 @@
     health_check:
       ping_protocol: http
       ping_port: 80
-      ping_path: "/" 
+      ping_path: "/"
       response_timeout: 5
       interval: 30
       unhealthy_threshold: 2

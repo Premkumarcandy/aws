@@ -1,0 +1,37 @@
+- name: Gather facts about any VPC with a tag
+  ec2_vpc_net_facts:
+    filters:
+      "tag:Name": "{{ name }}vpc"
+  register: ec2_vpc_result
+
+- name: Set facts vpc_id and vpc_cidr_block
+  set_fact:
+    "vpc_{{ item }}": "{{ ec2_vpc_result.vpcs[0].item }}"
+  with_items:
+    - "id"
+    - "cidr_block"
+
+- name: Get PRIVATE subnets
+  ec2_vpc_subnet_facts:
+    filters:
+      "tag:Name": "{{ name }}priv"
+  register: ec2_subnet
+
+- name: Set facts PRIVATE subnets
+  set_fact:
+    private_subnets:
+      - "{{ ec2_subnet.subnets[0].id }}"
+      - "{{ ec2_subnet.subnets[1].id }}"
+
+# FIX: add to subnet name -pub- prefix
+- name: Get PUBLIC subnets
+  ec2_vpc_subnet_facts:
+    filters:
+      "tag:Name": "{{ name }}"
+  register: ec2_public_subnet
+
+- name: Set facts PUBLIC subnets
+  set_fact:
+    public_subnets:
+      - "{{ ec2_public_subnet.subnets[0].id }}"
+      - "{{ ec2_public_subnet.subnets[1].id }}"

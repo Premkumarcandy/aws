@@ -1,26 +1,7 @@
-#####################
-- name: Gather facts about any VPC with a tag
-  ec2_vpc_net_facts:
-    filters:
-      "tag:Name": "{{ name }}vpc"
-  register: ec2_vpc_result
-
-- name: Set fact ec2_vpc
-  set_fact:
-    "ec2_vpc": "{{ ec2_vpc_result.vpcs[0] }}"
-
-- name: Get private subnets
-  ec2_vpc_subnet_facts:
-    filters:
-      "tag:Name": "{{ name }}priv"
-  register: ec2_subnet
-
-- name: Set facts private subnets
-  set_fact:
-    private_subnets:
-      - "{{ ec2_subnet.subnets[0].id }}"
-      - "{{ ec2_subnet.subnets[1].id }}"
-
+# Dependencies:
+  # {{ name }} is defined in vars
+  # {{ vpc_id, vpc_cidr_block }} depend on role get_facts
+  
 - name: Creating rds_subnet_group
   rds_subnet_group:
     state: present
@@ -33,20 +14,16 @@
   ec2_group:
     name: "{{ name }}rds"
     description: "{{ name }}rds"
-    vpc_id: "{{ ec2_vpc.id }}"
+    vpc_id: "{{ vpc_id }}"
     rules:
       - proto: tcp
         from_port: 3306
         to_port: 3306
-        cidr_ip: "{{ ec2_vpc.cidr_block }}"
+        cidr_ip: "{{ vpc_cidr_block }}"
     rules_egress:
       - proto: all
         cidr_ip: 0.0.0.0/0
   register: ec2_sg_rds
-
-- name: Debug Security Group for RDS
-  debug:
-    var: ec2_sg_rds
 
 - name: Creating RDS instance
   rds:
@@ -58,8 +35,6 @@
     # FIX: use username and password from vault
     username: "{{ rds.username }}"
     password: "{{ rds.password }}"
-    # rds_subnet_group
-    # fix: get it from rds_subnet_group var
     subnet: "{{ name }}rsg"
     vpc_security_groups: "{{ ec2_sg_rds.group_id }}"
     tags:
