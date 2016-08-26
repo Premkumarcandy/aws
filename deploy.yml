@@ -2,15 +2,15 @@
   hosts: tag_Name_devbrdweb
   gather_facts: true
   become: yes
-  vars:
+#  vars:
 #    cluster_name: broadcast
-    websites:
-      - name: cityline
-        root: /var/www/html/cityline
+#    websites:
+#      - name: cityline
+#        root: /var/www/html/cityline
 #      - name: citytv
   roles:
 #    - create_users
     - php
-    - nginx
+#    - nginx
 #    - deploy
 

@@ -1,15 +1,15 @@
-- name: Create groups
-  group: 
-    name: "{{ item.name }}"
-    state: present
-  with_items: "{{ websites }}"
+#- name: Create groups
+#  group: 
+#    name: "{{ item.name }}"
+#    state: present
+#  with_items: "{{ websites }}"
 
-- name: Create users
-  user: 
-    name: "{{ item.name }}"
-    group: "{{ item.name }}"
-    state: present
-  with_items: "{{ websites }}"
+#- name: Create users
+#  user: 
+#    name: "{{ item.name }}"
+#    group: "{{ item.name }}"
+#    state: present
+#  with_items: "{{ websites }}"
 
 - name: Install php packages
   yum:
@@ -66,21 +66,21 @@
 #  notify:
 #    - restart php-fpm
 
-- name: Remove php-fpm defaults
-  file: 
-    path: "/etc/alternatives/php-fpm.d/www.conf"
-    state: absent
+#- name: Remove php-fpm defaults
+#  file: 
+#    path: "/etc/alternatives/php-fpm.d/www.conf"
+#    state: absent
 
-- name: Copy php-fpm config 
-  template: 
-    dest: "/etc/alternatives/php-fpm.d/{{ item.name }}.conf"
-    src: "php-fpm.d/template.conf"
-    owner: root
-    group: root 
-    mode: 0644
-  with_items: "{{ websites }}"
-  notify: 
-    - restart php-fpm
+#- name: Copy php-fpm config 
+#  template: 
+#    dest: "/etc/alternatives/php-fpm.d/www.conf"
+##    src: "php-fpm.d/template.conf"
+#    owner: root
+#    group: root 
+#    mode: 0644
+#  with_items: "{{ websites }}"
+#  notify: 
+#    - restart php-fpm
 
 - service: 
     name: php-fpm-5.6

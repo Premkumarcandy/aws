@@ -62,4 +62,4 @@ jump:
   key_name: "{{ create_ec2_key.name }}"
   instance_type: 't2.nano'
   source_ami: 'ami-7172b611'
-
+  
