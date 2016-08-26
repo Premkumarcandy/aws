@@ -6,7 +6,7 @@
 
 - name: Set facts vpc_id and vpc_cidr_block
   set_fact:
-    "vpc_{{ item }}": "ec2_vpc_result.vpcs[0].{{ item }}"
+    "vpc_{{ item }}": "{{ ec2_vpc_result.vpcs[0] }}.{{ item }}"
   with_items:
     - "id"
     - "cidr_block"
