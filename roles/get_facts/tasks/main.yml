@@ -11,6 +11,10 @@
     - "id"
     - "cidr_block"
 
+- name: Debug vpc_id
+  debug:
+    var: vpc_id
+    
 - name: Get PRIVATE subnets
   ec2_vpc_subnet_facts:
     filters:
