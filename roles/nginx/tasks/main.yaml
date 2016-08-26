@@ -25,18 +25,16 @@
 
 - name: Create /var/www/html
   file:
-    path: "/var/www/html/{{ item.root }}"
+    path: "/var/www/html"
     state: directory
-  with_items: "{{ websites }}"
     
 - name: Copy nginx configs
   template: 
-    dest: "/etc/nginx/conf.d/{{ item.name }}.conf"
-    src: "conf.d/{{ item.name }}.conf"
+    dest: "/etc/nginx/conf.d/{{ website.name }}.conf"
+    src: "conf.d/template.conf"
     owner: root
     group: root
     mode: 0644
-  with_items: "{{ websites }}"
   notify: 
     - reload nginx
 
