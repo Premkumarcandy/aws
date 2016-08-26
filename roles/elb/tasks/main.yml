@@ -27,7 +27,7 @@
     state: "{{ elb.state }}"
     scheme: "{{ elb.scheme }}"
     subnets: "{{ public_subnets }}"
-     cross_az_load_balancing: "{{ elb.cross_az_load_balancing }}"
+    cross_az_load_balancing: "{{ elb.cross_az_load_balancing }}"
     listeners:
       - protocol: http
         load_balancer_port: 80
