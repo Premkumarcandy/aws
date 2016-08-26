@@ -6,14 +6,19 @@
 
 - name: Set facts vpc_id and vpc_cidr_block
   set_fact:
-    "vpc_{{ item }}": "{{ ec2_vpc_result.vpcs[0] }}.{{ item }}"
-  with_items:
-    - "id"
-    - "cidr_block"
+    "vpc_id": "{{ ec2_vpc_result.vpcs[0].id }}"
+
+- name: Set facts vpc_id and vpc_cidr_block
+  set_fact:
+    "vpc_cidr_block": "{{ ec2_vpc_result.vpcs[0].cidr_block }}"
 
 - name: Debug vpc_id
   debug:
     var: vpc_id
+
+- name: Debug vpc_id
+  debug:
+    var: vpc_cidr_block
     
 - name: Get PRIVATE subnets
   ec2_vpc_subnet_facts:
