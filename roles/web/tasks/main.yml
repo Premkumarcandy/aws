@@ -1,17 +1,21 @@
+# Dependencies:
+# name - defined in vars
+# vpc_id, vpc_cidr_block, public_subnets, private_subnets - from role get_facts
+
 - name: Creating Security Group for Web Nodes
   ec2_group:
-    name: "{{ env.name }}{{ cluster.name }}web"
-    description: "{{ env.name }}{{ cluster.name }}web"
-    vpc_id: "{{ ec2_vpc.vpc_id }}"
+    name: "{{ name }}web"
+    description: "{{ name }}web"
+    vpc_id: "{{ vpc_id }}"
     rules:
       - proto: tcp
         from_port: 22
         to_port: 22
-        cidr_ip: "{{ ec2_vpc.vpc.cidr_block }}"
+        cidr_ip: "{{ vpc_cidr_block }}"
       - proto: tcp
         from_port: 80
         to_port: 80
-        cidr_ip: "{{ ec2_vpc.vpc.cidr_block }}"
+        cidr_ip: "{{ vpc_cidr_block }}"
     rules_egress:
       - proto: all
         cidr_ip: 0.0.0.0/0
@@ -24,17 +28,17 @@
 - name: Provision ec2 instances for Web nodes
   ec2:
     # FIX: create instances in differrent subnets
-    vpc_subnet_id: "{{ private_vpc_subnets[0] }}"
+    vpc_subnet_id: "{{ private_subnets[0] }}"
     group_id: "{{ ec2_sg_web.group_id }}"
     image: "{{ web.image }}"
     instance_type: "{{ web.instance_type }}"
     key_name: "{{ web.key_name }}"
     instance_tags:
-      Name: "{{ env.name }}{{ cluster.name }}web"
+      Name: "{{ name }}web"
       Env: "{{ env.name }}"
     count_tag:
-      Name: "{{ env.name }}{{ cluster.name }}web"
-    exact_count: 2
+      Name: "{{ name }}web"
+    exact_count: "{{ web.exact_count }}"
     wait: true
 #  with_items: "{{ private_vpc_subnets }}"
   register: ec2_web

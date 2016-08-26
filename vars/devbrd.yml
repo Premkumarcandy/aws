@@ -58,6 +58,7 @@ ec2_keys:
 web:
   image: 'ami-7172b611'
   instance_type: 't2.nano'
+  exact_count: 2
   key_name: "{{ ec2_keys[0].name }}"
 #
 jump:
