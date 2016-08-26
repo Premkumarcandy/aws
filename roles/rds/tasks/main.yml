@@ -38,6 +38,7 @@
     subnet: "{{ name }}rsg"
     vpc_security_groups: "{{ ec2_sg_rds.group_id }}"
     tags:
+      Name: "{{ name }}dbm01"
       env: "{{ env.name }}"
       cluster: "{{ cluster.name }}"
     wait: yes

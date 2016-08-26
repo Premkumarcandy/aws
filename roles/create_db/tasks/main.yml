@@ -1,21 +1,35 @@
-- name: Create database
-  mysql_db:
-    login_host: '{{ rds_instance.instance.endpoint }}'
-    login_user: '{{ rds.username }}'
-    login_password: '{{ rds.password }}'
-    name: '{{ create_db.mysql.user }}'
-    state: present
+# Depends on rds role
+- name: Get RDS facts
+  rds:
+    command: facts
+    instance_name: "{{ name }}dbm01"
+    register: rds_facts
 
-- name: Grant access to db for mysqluser
-  mysql_user:
-    login_host: '{{ rds_instance.instance.endpoint }}'
-    login_user: '{{ rds.username }}'
-    login_password: '{{ rds.password }}'
-    name: '{{ create_db.mysql.user }}'
-    password: '{{ create_db.mysql.password }}'
-    priv: '{{ create_db.mysql.name }}.*:ALL'
-    state: present
-    host: '%'
+- name: Debug rds_facts
+  debug:
+    var: rds_facts
+    
+#    rds_facts.instance.endpoint
+    
+#- name: Create database
+#  mysql_db:
+#    # FIX: get rds endpoint 
+#    login_host: '{{ rds_instance.instance.endpoint }}'
+#    login_user: '{{ rds.username }}'
+#    login_password: '{{ rds.password }}'
+#    name: '{{ create_db.mysql.user }}'
+#    state: present
+
+#- name: Grant access to db for mysqluser
+#  mysql_user:
+#    login_host: '{{ rds_instance.instance.endpoint }}'
+#    login_user: '{{ rds.username }}'
+#    login_password: '{{ rds.password }}'
+#    name: '{{ create_db.mysql.user }}'
+#    password: '{{ create_db.mysql.password }}'
+#    priv: '{{ create_db.mysql.name }}.*:ALL'
+#    state: present
+#    host: '%'
 
 #- name: Import db dump
 #  mysql_db:

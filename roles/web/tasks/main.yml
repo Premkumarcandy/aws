@@ -1,6 +1,7 @@
 # Dependencies:
 # name - defined in vars
 # vpc_id, vpc_cidr_block, public_subnets, private_subnets - from role get_facts
+# key_name depends on role ec2_keys
 
 - name: Creating Security Group for Web Nodes
   ec2_group:
