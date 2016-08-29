@@ -34,6 +34,7 @@
     image: "{{ web.image }}"
     instance_type: "{{ web.instance_type }}"
     key_name: "{{ web.key_name }}"
+    instance_profile_name: 'cityline-codedeploy'
     instance_tags:
       Name: "{{ name }}web"
       Env: "{{ env.name }}"
