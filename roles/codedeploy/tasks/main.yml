@@ -11,7 +11,7 @@
 
 - name: Get CodeDeploy 
   get_url:
-    url: "https://aws-codedeploy-{{ ansible_ec2_placement_region }}.s3.amazonaws.com/latest/install"
+    url: "https://aws-codedeploy-us-west-2.s3.amazonaws.com/latest/install"
     dest: /tmp/codedeploy-install
 
 - name: Codedeploy Install Binary
