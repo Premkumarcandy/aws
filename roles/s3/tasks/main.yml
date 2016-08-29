@@ -3,8 +3,4 @@
     bucket: "{{ s3.name }}"
     mode: create
     permission: private
-  register: s3_bucket
 
-- name: Debug S3 bucket
-  debug:
-    var: s3_bucket

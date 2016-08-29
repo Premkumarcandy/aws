@@ -1,0 +1,6 @@
+- name: Playbook to install AWS Code Deploy agent
+  hosts: tag_Name_devbrdweb
+  connection: local
+  gather_facts: false
+  roles:
+    - codedeploy

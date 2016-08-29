@@ -1,0 +1,25 @@
+#ruby
+#wget
+#wget https://aws-codedeploy-us-west-2.s3.amazonaws.com/latest/install
+#chmod +x ./install
+#sudo ./install auto
+
+#service codedeploy-agent status
+
+- name: Get Instance Metadata
+  action: ec2_facts
+
+- name: Get CodeDeploy 
+  get_url:
+    url: "https://aws-codedeploy-{{ ansible_ec2_placement_region }}.s3.amazonaws.com/latest/install"
+    dest: /tmp/codedeploy-install
+
+- name: Codedeploy Install Binary
+  file:
+    state: file
+    path: /tmp/codedeploy-install
+    mode: 0755
+    
+- name: Codedeploy Install
+  become: true
+  command: /tmp/codedeploy-install auto
