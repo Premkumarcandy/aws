@@ -10,13 +10,16 @@
   action: ec2_facts
 
 - name: Get CodeDeploy
-  command: wget https://aws-codedeploy-us-west-2.s3.amazonaws.com/latest/install
-  
-- name: Codedeploy Install Binary
-  file:
-    state: file
-    path: /home/ec2-user/install
+  get_url:
+    url: https://aws-codedeploy-us-west-2.s3.amazonaws.com/latest/install
+    dest: /home/ec2-user/install
     mode: 0755
+  
+#- name: Codedeploy Install Binary
+#  file:
+#    state: file
+#    path: /home/ec2-user/install
+#    mode: 0755
     
 - name: Codedeploy Install
   become: true
