@@ -1,0 +1,8 @@
+- name: Playbook to create S3 bucket
+  hosts: localhost
+  connection: local
+  gather_facts: false
+#  vars_files:
+#    - vars/devbrd.yml
+  roles:
+    - s3

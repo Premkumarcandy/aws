@@ -6,3 +6,5 @@ mysql_password: cityline
 website:
   name: cityline
   server_name: "cityline.ca www.cityline.ca"
+s3:
+  name: cityline-codedeploy
