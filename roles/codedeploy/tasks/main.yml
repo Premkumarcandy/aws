@@ -9,17 +9,15 @@
 - name: Get Instance Metadata
   action: ec2_facts
 
-- name: Get CodeDeploy 
-  get_url:
-    url: "https://aws-codedeploy-us-west-2.s3.amazonaws.com/latest/install"
-    dest: /tmp/codedeploy-install
-
+- name: Get CodeDeploy
+  command: wget https://aws-codedeploy-us-west-2.s3.amazonaws.com/latest/install
+  
 - name: Codedeploy Install Binary
   file:
     state: file
-    path: /tmp/codedeploy-install
+    path: /home/ec2-user/install
     mode: 0755
     
 - name: Codedeploy Install
   become: true
-  command: /tmp/codedeploy-install auto
+  command: /home/ec2-user/install auto
