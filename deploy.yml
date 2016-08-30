@@ -1,4 +1,4 @@
-- name: Playbook to deploy Wordpress
+- name: Playbook to prepare EC2 instances for Wordpress
   hosts: tag_Name_devbrdweb
   gather_facts: true
   become: yes
