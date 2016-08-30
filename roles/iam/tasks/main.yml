@@ -1,0 +1,12 @@
+- name: Create IAM role with custom trust relationship
+  iam:
+    iam_type: "{{ iam.type }}"
+    name: "{{ iam.name }}"
+    state: "{{ iam.state }}"
+    trust_policy:
+      Version: '2012-10-17'
+      Statement:
+        - Action: sts:AssumeRole
+          Effect: Allow
+          Principal:
+            Service: lambda.amazonaws.com
